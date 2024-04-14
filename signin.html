@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authentication Example</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    form {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    input {
+      margin-bottom: 10px;
+      padding: 8px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #googleLogin {
+      background-color: #dd4b39;
+    }
+
+    #googleLogin:hover {
+      background-color: #c23321;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <div>
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="email" id="signupEmail" placeholder="Email" required>
+      <input type="password" id="signupPassword" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+  <div>
+    <h2>Google Login</h2>
+    <button id="googleLogin">Login with Google</button>
+  </div>
+  
+  <button onclick="goToGallery()">Go to Gallery</button>
+
+  <script>
+    function goToGallery() {
+      // Ohjaa käyttäjän gallery.html-sivulle
+      window.location.href = 'gallery.html';
+    }
+  </script>
+
+<button onclick="goToIndex()">Draw something</button>
+
+<script>
+  function goToIndex() {
+    // Ohjaa käyttäjän gallery.html-sivulle
+    window.location.href = 'index.html';
+  }
+</script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+
+  <script>
+    // Alusta Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7uUEA1ktWqFC3rShiOsnQcjQIDmo4wRI",
+      authDomain: "shittywall.firebaseapp.com",
+      databaseURL: "https://shittywall-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "shittywall",
+      storageBucket: "shittywall.appspot.com",
+      messagingSenderId: "1044971304901",
+      appId: "1:1044971304901:web:85e6d5f895ea8a54303dac",
+      measurementId: "G-K8PFZHC70N"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Kirjautumislomake
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Kirjautuminen onnistui
+          const user = userCredential.user;
+          console.log('Kirjautuminen onnistui:', user);
+        })
+        .catch((error) => {
+          // Kirjautuminen epäonnistui
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error('Kirjautuminen epäonnistui:', errorCode, errorMessage);
+        });
+    });
+
+    // Rekisteröitymislomake
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Rekisteröityminen onnistui
+          const user = userCredential.user;
+          console.log('Rekisteröityminen onnistui:', user);
+        })
+        .catch((error) => {
+          // Rekisteröityminen epäonnistui
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error('Rekisteröityminen epäonnistui:', errorCode, errorMessage);
+        });
+    });
+        // Google-kirjautuminen
+        const googleLoginButton = document.getElementById('googleLogin');
+    googleLoginButton.addEventListener('click', function () {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // Google-kirjautuminen onnistui
+          const user = result.user;
+          console.log('Google-kirjautuminen onnistui:', user);
+        })
+        .catch((error) => {
+          // Google-kirjautuminen epäonnistui
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error('Google-kirjautuminen epäonnistui:', errorCode, errorMessage);
+        });
+    });
+  </script>
+
+</body>
+
+</html>

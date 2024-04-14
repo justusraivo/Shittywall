@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Viewer</title>
+  <link rel="icon" href="tilelogo.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfF_LkpAAAAAHhRerpEFCtrOo4voUYwxtHr1ss9"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      background-color: antiquewhite;
+      overflow-x: auto;
+    }
+
+body::after {
+content: "";
+position: absolute;
+top: 40%; /* 30% alapuolella */
+left: 0;
+width: 100%;
+height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
+background-color: #ecd167; /* turkoosi väri */
+z-index: -1; /* asetetaan taustalle */
+}
+
+
+    #imageContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid #ddd;
+      position: inherit;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    #commentInput {
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 10px;
+      margin-top: 40px;
+      font-family: "Kanit", sans-serif;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: max-width 0.3s ease-in-out;
+    }
+
+    #characterCount {
+      font-size: 12px;
+      color: #888;
+      font-family: "Kanit", sans-serif;
+    }
+
+    #commentList {
+      list-style: none;
+      padding: 0;
+      width: 80%;
+      font-family: "Kanit", sans-serif;
+    }
+
+    .comment {
+      width: 500px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px auto;
+      background-color: #fff;
+      height: auto;
+      overflow: auto;
+      font-family: "Kanit", sans-serif;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .button-74 {
+      background-color: #fbeee0;
+      border: 2px solid #422800;
+      box-shadow: #422800 4px 4px 0 0;
+      color: #422800;
+      cursor: pointer;
+      display: inline-block;
+      font-weight: 600;
+      font-size: 18px;
+      padding: 0 18px;
+      line-height: 50px;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      display: block;
+      margin: 10px auto;
+    }
+
+    .button-74:hover {
+      background-color: #fff;
+    }
+
+    .button-74:active {
+      box-shadow: #422800 2px 2px 0 0;
+      transform: translate(2px, 2px);
+    }
+
+    #commentCount {
+      background-color: #f3ffc1;
+      color: #000000;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-family: "Kanit", sans-serif;
+    }
+
+    .gallery-image {
+      height: 90px;
+      width: 90px;
+      cursor: pointer;
+      padding: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <img src="tilelogo.png" alt="Go to Gallery" class="gallery-image" onclick="goToGallery()">
+
+  <div id="imageContainer">
+    <img id="imageView" src="" alt="Large Image">
+  </div>
+  
+  <span id="commentCount">0 comments</span>
+  <input type="text" id="commentInput" placeholder="Write a comment...">
+  <span id="characterCount">0 / 500</span>
+  <button class="button-74" onclick="submitComment()">Post comment</button>
+
+  <ul id="commentList"></ul>
+
+  <script>
+    function goToGallery() {
+      window.location.href = 'tykatyimmat.html';
+    }
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-storage.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7uUEA1ktWqFC3rShiOsnQcjQIDmo4wRI",
+      authDomain: "shittywall.firebaseapp.com",
+      projectId: "shittywall",
+      storageBucket: "shittywall.appspot.com",
+      messagingSenderId: "1044971304901",
+      appId: "1:1044971304901:web:85e6d5f895ea8a54303dac",
+      measurementId: "G-K8PFZHC70N",
+      databaseURL: "https://shittywall-default-rtdb.europe-west1.firebasedatabase.app"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const imageUrl = decodeURIComponent(urlParams.get('url'));
+    const storageRef = firebase.storage().refFromURL('gs://shittywall.appspot.com');
+    const imageView = document.getElementById('imageView');
+    imageView.src = imageUrl;
+
+    const commentInput = document.getElementById('commentInput');
+    const commentList = document.getElementById('commentList');
+    const characterCount = document.getElementById('characterCount');
+    const commentCount = document.getElementById('commentCount');
+
+    const database = firebase.database();
+
+    const commentsRef = database.ref('comments').orderByChild('imageUrl');
+
+    commentsRef.on('child_added', (snapshot) => {
+      const comment = snapshot.val();
+      if (comment.imageUrl === imageUrl) {
+        displayComment(comment.text);
+      }
+    });
+
+    function displayComment(text) {
+      const commentItem = document.createElement('li');
+      commentItem.classList.add('comment');
+      commentItem.innerText = text;
+      commentList.insertBefore(commentItem, commentList.firstChild);
+      const commentItems = document.querySelectorAll('.comment');
+      commentCount.textContent = `${commentItems.length} Comments`;
+    }
+
+
+    function onClick(e) {
+    e.preventDefault();
+    grecaptcha.enterprise.ready(async () => {
+      const token = await grecaptcha.enterprise.execute('6LfF_LkpAAAAAHhRerpEFCtrOo4voUYwxtHr1ss9', {action: 'LOGIN'});
+    });
+  }
+
+
+    function submitComment() {
+      const text = commentInput.value.trim();
+      if (text !== '') {
+        const commentData = {
+          imageUrl: imageUrl,
+          text: text
+        };
+
+        const newCommentRef = database.ref('comments').push();
+        newCommentRef.set(commentData)
+          .then(() => {
+            commentInput.value = '';
+          })
+          .catch((error) => {
+            console.error('Error writing comment to database:', error);
+          });
+      }
+    }
+
+    commentInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        submitComment();
+      }
+    });
+
+    commentInput.addEventListener('input', () => {
+      const inputLength = commentInput.value.length;
+      characterCount.textContent = `${inputLength} / 500`;
+
+      if (inputLength > 500) {
+        commentInput.value = commentInput.value.substring(0, 500);
+        characterCount.textContent = '500 / 500';
+      }
+    });
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,371 @@
+*{
+  font-family: "Kanit", sans-serif;
+}
+
+
+body {
+
+  overflow-x: hidden; /* Estää vaakasuuntaisen vierityksen */
+  text-align: center;
+  font-family: "Kanit", sans-serif;
+  background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
+}
+body::after {
+  content: "";
+  position: absolute;
+  top: 40%; /* 30% alapuolella */
+  left: 0;
+  width: 100%;
+  height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
+  background-color: #ecd167; /* turkoosi väri */
+  z-index: -1; /* asetetaan taustalle */
+}
+
+
+
+h1 {
+  color: #404040;
+  font-family: "Anton", sans-serif;
+  
+  font-size: 50px;
+
+  font-style: normal;
+  margin-top: -20px; 
+}
+
+h2 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  color: #c38d4f;
+  margin-top: -40px; 
+}
+
+
+#canvas-container {
+  width: 100%;
+  max-width: 500px; /* Määritä haluttu enimmäisleveys */
+  margin: 0 auto; /* Keskitä canvas */
+}
+
+canvas {
+  display: block; /* Estä ylimääräinen tyhjä tila */
+ 
+  height: auto; /* Säilytä suhde näytön leveyteen */
+  background-color: #f0f0f0; /* Vain havainnollisuutta varten */
+}
+.canvas2 {
+  visibility: hidden;
+}
+
+label, button {
+  margin: 10px auto;
+}
+
+label {
+  display: block;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.color-picker-container {
+  display: inline-block;
+  padding: 50px;
+}
+
+.color-picker-container label {
+  margin-right: 10px;
+  
+}
+
+.color-picker-container input[type="color"] {
+
+  padding: 6px;
+  cursor: pointer;
+  outline: none;
+
+  transition: border-color 0.3s ease;
+}
+
+.color-picker-container input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-picker-container input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+}
+
+.color-picker-container input[type="color"]:hover {
+  border-color: #999;
+}
+
+
+.material-symbols-outlined {
+  cursor: pointer; 
+  transform: scale(2);
+  padding: 10px;
+  color: #404040;
+}
+
+#material-symbols::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.button-74 {
+  background-color: #cde1cd;
+  border: 2px solid #6e4303;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #603d08;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  line-height: 50px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  display: block;
+  margin: 10px auto;
+ 
+  
+}
+
+.button-74:hover {
+  background-color: #fff;
+}
+
+.button-74:active {
+  box-shadow: #4b4b4b 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+.label-text {
+  color: #333; /* Määritetään tekstin väri */
+  font-weight: bold; /* Tehdään tekstistä lihavoitu */
+  font-size: 16px; /* Asetetaan fontin koko */
+}
+
+/* Kohdistus input-elementtiin */
+#textInput {
+  width: 200px; /* Määritetään leveys */
+  padding: 10px; /* Lisätään sisätilaa */
+  border: 1px solid #ccc; /* Lisätään reuna */
+  border-radius: 5px; /* Pyöristetään reunat */
+  font-size: 14px; /* Asetetaan fontin koko */
+}
+
+/* Kohdistus input-elementtiin, kun se on aktiivinen (focus) */
+#textInput:focus {
+  border-color: #0099ff; /* Muutetaan reunan väriä aktiivisena ollessa */
+  box-shadow: 0 0 5px rgba(0, 153, 255, 0.5); /* Lisätään varjostus */
+}
+
+@media (min-width: 768px) {
+  .button-74 {
+    min-width: 120px;
+    padding: 0 25px;
+  }
+}
+
+
+  .slider {
+    -webkit-appearance: none;
+    width: 500px;
+    height: 25px;
+    background: #dfe9b3;
+    outline: none;
+   
+    display: block;
+    margin: 0 auto;
+    padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
+    box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
+  }
+
+
+
+.slider:hover {
+  opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  background-image: url("harja3.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
+  background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
+  
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #e8cd7c;
+  cursor: pointer;
+}
+
+.slider2 {
+  -webkit-appearance: none;
+  width: 500px;
+  height: 25px;
+  background: #dfe9b3;
+  outline: none;
+ 
+  display: block;
+  margin: 0 auto;
+  padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
+  box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
+}
+
+
+
+.slider2:hover {
+opacity: 1;
+}
+.slider2::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 50px;
+height: 50px;
+background-image: url("fontsize.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
+background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
+
+cursor: pointer;
+}
+.slider2::-moz-range-thumb {
+width: 25px;
+height: 25px;
+background: #e8cd7c;
+cursor: pointer;
+}
+
+
+.brushSizeDisplay {
+  position: relative;
+  box-sizing: border-box;
+}
+
+
+.gallery-image {
+
+  height: 90px;
+  width: 90px;
+  cursor: pointer; 
+  padding: 30px;
+}
+
+.label-text {
+  color: rgb(75, 75, 75); 
+  font-weight: bold; 
+  font-size: 16px; 
+}
+
+@media screen and (max-width: 768px) {
+  /* Tähän tulee säännöt, jotka haluat soveltaa kun näyttö on enintään 768 pikseliä leveä */
+  body {
+    font-size: 14px; /* Esimerkki säännöstä */
+    
+  }
+  body::after {
+    visibility: hidden;
+    content: "";
+    position: absolute;
+    top: 40%; /* 30% alapuolella */
+    left: 0;
+    width: 100%;
+    height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
+    background-color: #ecd167; /* turkoosi väri */
+    z-index: -1; /* asetetaan taustalle */
+  }
+  
+
+  .slider {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 25px;
+    background: #dfe9b3;
+    outline: none;
+   
+    display: block;
+    margin: 0 auto;
+    padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
+    box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
+  }
+
+
+
+.slider:hover {
+  opacity: 1;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  background-image: url("harja3.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
+  background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
+  
+  cursor: pointer;
+}
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #e8cd7c;
+  cursor: pointer;
+}
+
+.slider2 {
+  -webkit-appearance: none;
+  width: 300px;
+  height: 25px;
+  background: #dfe9b3;
+  outline: none;
+ 
+  display: block;
+  margin: 0 auto;
+  padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
+  box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
+}
+
+
+
+.slider2:hover {
+opacity: 1;
+}
+.slider2::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 50px;
+height: 50px;
+background-image: url("fontsize.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
+background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
+
+cursor: pointer;
+}
+.slider2::-moz-range-thumb {
+width: 25px;
+height: 25px;
+background: #e8cd7c;
+cursor: pointer;
+}
+
+#canvas-container {
+  width: 100%;
+  max-width: 500px; /* Määritä haluttu enimmäisleveys */
+  margin: 0 auto; /* Keskitä canvas */
+}
+
+canvas {
+  display: block; /* Estä ylimääräinen tyhjä tila */
+
+  height: auto; /* Säilytä suhde näytön leveyteen */
+  background-color: #f0f0f0; /* Vain havainnollisuutta varten */
+}
+}

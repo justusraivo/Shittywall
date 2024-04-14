@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Art Gallery</title>
+  <style>
+    /* Lisää tarvittaessa tyyliä gallerian ulkoasulle */
+
+    * {
+      background-color: antiquewhite;
+    }
+
+    #imageContainer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    h1,
+    h2,
+    h3 {
+      text-align: center;
+    }
+
+    .galleryImage {
+      max-width: 100%;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    button {
+      margin: 10px;
+    }
+
+    .commentSection {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .commentInput {
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    #drawMoreButtonContainer {
+    position: fixed;
+    top: 10px; /* Määrittää napin etäisyyden yläreunasta */
+    right: 10px; /* Määrittää napin etäisyyden oikeasta reunasta */
+    z-index: 999; /* Varmistaa, että nappi on päällimmäisenä */
+}
+  </style>
+</head>
+
+<body>
+
+  <h1>Tiles</h1>
+
+  <div id="drawMoreButtonContainer">
+    <button onclick="goToIndex()">Draw more</button>
+</div>
+
+  <script>
+    function goToIndex() {
+      // Ohjaa käyttäjän gallery.html-sivulle
+      window.location.href = 'index.html';
+    }
+  </script>
+ 
+
+  <div id="imageContainer"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-storage.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      // Firebase-konfiguraatio
+      apiKey: "AIzaSyD7uUEA1ktWqFC3rShiOsnQcjQIDmo4wRI",
+      authDomain: "shittywall.firebaseapp.com",
+      projectId: "shittywall",
+      storageBucket: "shittywall.appspot.com",
+      messagingSenderId: "1044971304901",
+      appId: "1:1044971304901:web:85e6d5f895ea8a54303dac",
+      measurementId: "G-K8PFZHC70N"
+    };
+
+    // Alusta Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Hae kuvat ja alusta viimeisin dokumentti
+    let nextPageToken = null;
+    const imageContainer = document.getElementById('imageContainer');
+
+    function loadImages() {
+      const imagesRef = firebase.storage().ref();
+      imagesRef.list({
+        maxResults: 100,
+        pageToken: nextPageToken
+      }).then((res) => {
+
+        if (res.items.length === 0) {
+          console.log('Ei lisää kuvia.');
+          return;
+        }
+
+        // Päivitä seuraavan pyynnön viimeisin dokumentti
+        nextPageToken = res.nextPageToken;
+
+        
+
+        // Kerää kaikki getDownloadURL-pyynnöt samanaikaisesti
+        const urlPromises = res.items.map(itemRef => itemRef.getDownloadURL());
+
+        // Odota, että kaikki pyynnöt ovat valmiita
+        Promise.all(urlPromises).then(urls => {
+          // Lisää kuvat sivulle oikeassa järjestyksessä
+          urls.reverse().forEach(url => {
+            // Luo kuvaelementti jokaiselle kuvatiedostolle
+            const imageElement = document.createElement('img');
+            imageElement.classList.add('galleryImage');
+            imageElement.src = url;
+
+            // Lisää kuva sivulle
+            imageContainer.appendChild(imageElement);
+            imageElement.addEventListener('click', () => {
+      window.location.href = `image.html?url=${encodeURIComponent(url)}`;
+            });
+          });
+        });
+
+      }).catch((error) => {
+        console.error('Error fetching images:', error);
+      });
+    }
+
+   
+    loadImages();
+    
+
+   
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      if (scrollY + windowHeight >= documentHeight - 200) {
+        // Lataa lisää kuvia
+        loadImages();
+      }
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Basics</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4428703355328825"
+     crossorigin="anonymous"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-functions.js"></script>
+
+  <script src="main.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- ... -->
+    <h1>The Shitty Wall</h1>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <label for="colorPicker">Valitse väri:</label>
+    <input type="color" id="colorPicker">
+    <button id="changeCanvas">Vaihda taustaväri</button>
+    <label for="brushSize">Valitse pensselin koko:</label>
+    <input type="range" id="brushSize" min="1" max="100" value="5">
+    <button id="eraseButton">Pyyhi: POIS</button>
+    <label for="textInput">Kirjoita tekstiä (max 100 merkkiä):</label>
+    <input type="text" id="textInput" maxlength="100">
+    <label for="fontSizeInput">Valitse fonttikoko:</label>
+    <input type="number" id="fontSizeInput" min="1" max="100" value="20">
+    <button id="addTextButton">Lisää tekstiä</button>
+    <button id="clearCanvasButton">Tyhjennä koko kuva</button>
+    <button id="undoButton">Kumoa</button>
+    <button id="uploadButton">Heitä seinälle</button>
+    <button onclick="goToGallery()">Go to Gallery</button>
+    <button onclick="goToLogin()">Login</button>
+    <button id="saveButton">Tallenna</button>
+
+    <!-- Lisää muita sisältöjä tarvittaessa -->
+
+    <script>
+      function goToGallery() {
+        // Ohjaa käyttäjän gallery.html-sivulle
+        window.location.href = 'gallery.html';
+      }
+
+      function goToLogin() {
+        // Ohjaa käyttäjän gallery.html-sivulle
+        window.location.href = 'signin.html';
+      }
+    </script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyD7uUEA1ktWqFC3rShiOsnQcjQIDmo4wRI",
+            authDomain: "shittywall.firebaseapp.com",
+            databaseURL: "https://shittywall-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "shittywall",
+            storageBucket: "shittywall.appspot.com",
+            messagingSenderId: "1044971304901",
+            appId: "1:1044971304901:web:85e6d5f895ea8a54303dac",
+            measurementId: "G-K8PFZHC70N"
+        };
+
+        // Alusta Firebase vain, jos se ei ole jo alustettu
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        // Määritä Firebase Storage
+        var storage = firebase.storage();
+
+        // Viittaus Firebase Storage -kansioon
+        var storageRef = storage.ref();
+
+        // Viittaus "/images" -kansioon
+        var imagesRef = storageRef.child('images');
+
+        // Kuuntelija tallennuspainikkeelle
+        document.getElementById('uploadButton').addEventListener('click', function () {
+            // Täällä voit lisätä koodin, joka tallentaa tiedoston imagesRef-kansioon
+            // Esimerkiksi:
+            var file = // Tiedoston viittaus, jonka haluat tallentaa
+            var imageName = 'kuva.jpg'; // Voit antaa tiedostolle nimen täällä
+            var imageRef = imagesRef.child(imageName);
+            var uploadTask = imageRef.put(file);
+        });
+    </script>
+</body>
+
+<script src="testi.js"></script>
+</html>
