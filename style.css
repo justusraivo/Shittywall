@@ -10,6 +10,7 @@ body {
   text-align: center;
   font-family: "Kanit", sans-serif;
   background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
+   transform: scale(0.8);
 }
 body::after {
   content: "";
