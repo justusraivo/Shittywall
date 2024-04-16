@@ -28,7 +28,7 @@ body::after {
 h1 {
   color: #404040;
   font-family: "Anton", sans-serif;
-  
+  cursor: pointer;
   font-size: 50px;
 
   font-style: normal;
@@ -274,24 +274,46 @@ cursor: pointer;
   font-size: 16px; 
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1600px) {
   /* Tähän tulee säännöt, jotka haluat soveltaa kun näyttö on enintään 768 pikseliä leveä */
   body {
-    font-size: 14px; /* Esimerkki säännöstä */
-    
-  }
-  body::after {
-    visibility: hidden;
-    content: "";
-    position: absolute;
-    top: 40%; /* 30% alapuolella */
-    left: 0;
-    width: 100%;
-    height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
-    background-color: #ecd167; /* turkoosi väri */
-    z-index: -1; /* asetetaan taustalle */
+    text-align: center;
+    font-family: "Kanit", sans-serif;
+    background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
   }
   
+  body::after {
+    content: "";
+    position: fixed; /* Muuta position: absolute; -> position: fixed; */
+    top: 40%; /* Säilytä haluttu etäisyys ylhäältä */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ecd167;
+    z-index: -1;
+  }
+  
+  .button-74 {
+    background-color: #cde1cd;
+    border: 2px solid #6e4303;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #603d08;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: block;
+    margin: 10px auto;
+   
+    
+  }
 
   .slider {
     -webkit-appearance: none;
@@ -375,4 +397,13 @@ canvas {
   height: auto; /* Säilytä suhde näytön leveyteen */
   background-color: #f0f0f0; /* Vain havainnollisuutta varten */
 }
+   
+.gallery-image {
+
+  height: 90px;
+  width: 90px;
+  cursor: pointer; 
+  padding: 30px;
+}
+
 }
