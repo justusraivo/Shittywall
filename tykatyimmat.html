@@ -128,9 +128,9 @@ body::after {
         function loadImages() {
             const imagesRef = firebase.storage().ref();
 
-            // Haetaan 100 viimeisintä kuvaa Firebasesta
+          //hae kuvat basesta
             imagesRef.list({
-                maxResults: 250,
+             
                 pageToken: nextPageToken
             }).then((res) => {
                 if (res.items.length === 0) {
