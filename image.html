@@ -4,13 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Image Viewer</title>
+  <title>Shitty Wall - Draw art fast, doodle, have fun, anonymous anarchy, paint, inspiration, comment</title>
   <link rel="icon" href="tilelogo.png" type="image/png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-  <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfF_LkpAAAAAHhRerpEFCtrOo4voUYwxtHr1ss9"></script>
+ 
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I"></script>
+  
+
   <style>
     body {
       display: flex;
@@ -23,17 +26,16 @@
       overflow-x: auto;
     }
 
-body::after {
-content: "";
-position: absolute;
-top: 40%; /* 30% alapuolella */
-left: 0;
-width: 100%;
-height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
-background-color: #ecd167; /* turkoosi väri */
-z-index: -1; /* asetetaan taustalle */
-}
-
+    body::after {
+      content: "";
+      position: absolute;
+      top: 40%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #ecd167;
+      z-index: -1;
+    }
 
     #imageContainer {
       display: flex;
@@ -146,7 +148,7 @@ z-index: -1; /* asetetaan taustalle */
   <span id="commentCount">0 comments</span>
   <input type="text" id="commentInput" placeholder="Write a comment...">
   <span id="characterCount">0 / 500</span>
-  <button class="button-74" onclick="submitComment()">Post comment</button>
+  <button class="button-74" onclick="onClick(event)">Post comment</button>
 
   <ul id="commentList"></ul>
 
@@ -154,6 +156,52 @@ z-index: -1; /* asetetaan taustalle */
     function goToGallery() {
       window.location.href = 'tykatyimmat.html';
     }
+
+    function onClick(e) {
+      e.preventDefault();
+      grecaptcha.ready(() => {
+        grecaptcha.execute('6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I', { action: 'LOGIN' })
+          .then(token => {
+            submitComment(token);
+            console.log(token)
+          });
+      });
+    }
+
+    function submitComment(token) {
+      const text = commentInput.value.trim();
+      if (text !== '') {
+        const commentData = {
+          imageUrl: imageUrl,
+          text: text
+        };
+
+        const newCommentRef = database.ref('comments').push();
+        newCommentRef.set(commentData)
+          .then(() => {
+            commentInput.value = '';
+          })
+          .catch((error) => {
+            console.error('Error writing comment to database:', error);
+          });
+      }
+    }
+
+    commentInput.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        onClick(event);
+      }
+    });
+
+    commentInput.addEventListener('input', () => {
+      const inputLength = commentInput.value.length;
+      characterCount.textContent = `${inputLength} / 500`;
+
+      if (inputLength > 500) {
+        commentInput.value = commentInput.value.substring(0, 500);
+        characterCount.textContent = '500 / 500';
+      }
+    });
   </script>
 
   <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
@@ -204,50 +252,6 @@ z-index: -1; /* asetetaan taustalle */
       const commentItems = document.querySelectorAll('.comment');
       commentCount.textContent = `${commentItems.length} Comments`;
     }
-
-
-    function onClick(e) {
-    e.preventDefault();
-    grecaptcha.enterprise.ready(async () => {
-      const token = await grecaptcha.enterprise.execute('6LfF_LkpAAAAAHhRerpEFCtrOo4voUYwxtHr1ss9', {action: 'LOGIN'});
-    });
-  }
-
-
-    function submitComment() {
-      const text = commentInput.value.trim();
-      if (text !== '') {
-        const commentData = {
-          imageUrl: imageUrl,
-          text: text
-        };
-
-        const newCommentRef = database.ref('comments').push();
-        newCommentRef.set(commentData)
-          .then(() => {
-            commentInput.value = '';
-          })
-          .catch((error) => {
-            console.error('Error writing comment to database:', error);
-          });
-      }
-    }
-
-    commentInput.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        submitComment();
-      }
-    });
-
-    commentInput.addEventListener('input', () => {
-      const inputLength = commentInput.value.length;
-      characterCount.textContent = `${inputLength} / 500`;
-
-      if (inputLength > 500) {
-        commentInput.value = commentInput.value.substring(0, 500);
-        characterCount.textContent = '500 / 500';
-      }
-    });
   </script>
 
 </body>
