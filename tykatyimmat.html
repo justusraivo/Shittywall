@@ -130,7 +130,7 @@ body::after {
 
             // Haetaan 100 viimeisintä kuvaa Firebasesta
             imagesRef.list({
-                maxResults: 100,
+                maxResults: 250,
                 pageToken: nextPageToken
             }).then((res) => {
                 if (res.items.length === 0) {
