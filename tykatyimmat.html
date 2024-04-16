@@ -4,28 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Memowall Gallery</title>
+    <title>Shitty Wall - Draw art fast, doodle, have fun, anonymous anarchy, paint, inspiration, comment</title>
     <link rel="icon" href="tilelogo.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
         /* Lisää tarvittaessa tyyliä gallerian ulkoasulle */
-
         body {
-  text-align: center;
-  font-family: "Kanit", sans-serif;
-  background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
+    text-align: center;
+    font-family: "Kanit", sans-serif;
+    background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
 }
+
 body::after {
-  content: "";
-  position: absolute;
-  top: 40%; /* 30% alapuolella */
-  left: 0;
-  width: 100%;
-  height: 100%; /* 70% alue ylhäältä, jossa väri muuttuu */
-  background-color: #ecd167; /* turkoosi väri */
-  z-index: -1; /* asetetaan taustalle */
+    content: "";
+    position: fixed; 
+    top: 40%; 
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ecd167;
+    z-index: -1;
 }
 
         #imageContainer {
@@ -46,14 +46,15 @@ body::after {
             cursor: pointer;
            
         }
-
         button {
-            background-color: #fbeee0;
-  border: 2px solid #6e4303;
+  background-color: #fbeee0;
+  border: 2px solid #363636;
   box-shadow: #422800 4px 4px 0 0;
-  color: #603d08;
+  color: #252525;
   cursor: pointer;
-  display: inline-block;
+  display: flex; /* Käytä flexboxia */
+  align-items: center; /* Keskitä teksti pystysuunnassa */
+  justify-content: center; /* Keskitä teksti vaakasuunnassa */
   font-weight: 600;
   font-size: 18px;
   padding: 0 18px;
@@ -63,10 +64,10 @@ body::after {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  display: block;
-  margin: 10px auto;
- 
-        }
+  margin: 10px auto; /* Keskitä napit sivulla */
+  width: 100px;
+  margin-right: 20px; /* Luo tyhjää tilaa oikealle puolelle */
+}
 
         .commentSection {
             display: none;
@@ -93,9 +94,8 @@ body::after {
     <img src="tilelogo.png" alt="Go to Gallery" class="gallery-image" onclick="goToGallery()">
 
     <div id="drawMoreButtonContainer">
-        <button onclick="goToIndex()">Draw more</button>
-        <button onclick="goToGallery()">Shittywall</button>
-        <button onclick="goToMostCommented()">Most Commented</button>
+        <button onclick="goToIndex()">Create</button>
+        <button onclick="goToMostCommented()">Popular</button>
         <button onclick="goToLast24()">Trending</button>
     </div>
 
@@ -136,7 +136,7 @@ body::after {
                     return;
                 }
 
-                // Päivitä seuraavan pyynnön viimeisin dokumentti
+             
                 nextPageToken = res.nextPageToken;
 
                 // Kerää kaikki getDownloadURL-pyynnöt samanaikaisesti
@@ -167,7 +167,7 @@ body::after {
             });
         }
 
-        // Lataa kuvat ensimmäisellä kerralla sivun latauksen yhteydessä
+       
         loadImages();
 
         window.addEventListener('scroll', () => {
@@ -176,26 +176,26 @@ body::after {
             const documentHeight = document.documentElement.scrollHeight;
 
             if (scrollY + windowHeight >= documentHeight - 200) {
-                // Lataa lisää kuvia, kun käyttäjä on lähellä sivun loppua
+            
                 loadImages();
             }
         });
 
         function goToIndex() {
-            // Ohjaa käyttäjän gallery.html-sivulle
+           
             window.location.href = 'index.html';
         }
         function goToMostCommented() {
-            // Ohjaa käyttäjän gallery.html-sivulle
+          
             window.location.href = 'kokeilugalleria.html';
         }
 
         function goToGallery() {
-            // Ohjaa käyttäjän gallery.html-sivulle
+      
             window.location.href = 'tykatyimmat.html';
         }
         function goToLast24() {
-            // Ohjaa käyttäjän tykatyimmat.html-sivulle
+           
             window.location.href = 'viim24.html';
         }
 
