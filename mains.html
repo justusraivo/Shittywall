@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Matrix koodisade</title>
+    <style>
+        body {
+            margin: 0;                    
+            overflow: hidden;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <body oncontextmenu="return palaaPaaSivulle()">
+        <!-- Sivun sisältö tässä -->
+      </body>
+      
+      <script>
+        function palaaPaaSivulle() {
+          window.location.href = "portfolio.html"; // Korvaa URL oikealla osoitteella
+          return false; // Estää selaimen oletusreaktion oikean napin painallukseen
+        }
+      </script>
+    
+    <canvas id="canvas"></canvas>
+   
+    <script src="app.js"></script>
+    <audio id="music" src="matrix intro leikattu12.mp3"></audio>
+    
+    <script>
+        let digital = new Digital({
+            ele: "#canvas", // 
+            hidenRate: 0.03, // 
+            letters: "123456789えぇけせねてめれゑげぜでダﾢﾥひまユヤセィイ",
+            fallRate: 60, // 
+            textDir: "ltr", //
+            letterSpace: 60, //
+            isMustTop: true, // 
+            mode: "window", // 
+            linePercent: 1, // 
+            font_size: 70, // 
+            firstLetterColor: "#FFF", // 
+            letterColor: "#6D2", // 
+            background: "#000",
+            width: 600, // 
+            height: 600 //
+            
+        });
+
+        //Tämä osio toistaa musiikin. Se tallentaa myös Localstorageen senhetkisen pisteen, josta se taas jatkuu
+        var audio = document.getElementById("music");
+        
+var paused = true;
+var time = 0;
+
+document.querySelector('#canvas').addEventListener('click',function(){
+    if (digital._state) {
+        digital.stop();
+        audio.pause();
+        paused = true;
+        time = audio.currentTime;
+        
+    } else {
+        digital.start();
+        audio.currentTime = time;
+        audio.play();
+        paused = false;
+    }
+});
+
+audio.addEventListener('pause', function() {
+    paused = true;
+    time = audio.currentTime;
+});
+
+// 
+audio.addEventListener('click', function() {
+  if (paused === false) {
+    audio.pause();
+    paused = true;
+    time = audio.currentTime;
+  } else {
+    audio.currentTime = time;
+    audio.play();
+    paused = false;
+  }
+});
+
+
+
+
+            
+        
+    </script>
+</body>
+
+</html>
