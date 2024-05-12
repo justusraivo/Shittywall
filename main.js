@@ -6,15 +6,26 @@ document.addEventListener("DOMContentLoaded", function () {
    
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, canvas.width, canvas.height);
-  
-      alert("By using this site I agree to its terms and conditions. No spreading of private data, no bullying or hateful content. Don't be a jerk, ok?");
+      if (hasAccepted) {
+        redirectToMainPage();
+    }
+
+    alert("By using this site I agree to its terms and conditions. No spreading of private data, no bullying or hateful content. Don't be a jerk, ok?");
     
+
     function acceptTerms() {
-        window.location.href = "https://shittywall.com"; 
+  
+        localStorage.setItem("termsAccepted", "true");
+        redirectToMainPage();
     }
     
+
     document.getElementById("acceptButton").addEventListener("click", acceptTerms);
-  
+
+    function redirectToMainPage() {
+        window.location.href = "https://www.example.com"; // Vaihda URL-osoite tarvittaessa
+    }
+
   
     // Muut koodit ja tapahtumankäsittelijät...
   
