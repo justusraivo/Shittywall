@@ -201,6 +201,15 @@ function onTouchStart(event) {
     drawingHistory = [step];
   }
 
+canvas.addEventListener("mousemove", function (e) {
+  if (isAddingText) {
+    canvas.style.cursor = "text";
+  } else {
+    canvas.style.cursor = "pointer";
+  }
+});
+
+
   function addText(e) {
     if (!isAddingText) return;
 
