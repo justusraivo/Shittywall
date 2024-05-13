@@ -37,6 +37,7 @@
       height: 100%;
       background-color: #ecd167;
       z-index: -1;
+      
     }
 
     #imageContainer {
@@ -136,6 +137,45 @@
       cursor: pointer;
       padding: 30px;
     }
+    @media screen and (max-width: 800px) {
+  
+  body {
+    font-size: 14px;
+    overflow-x: auto;
+  }
+
+  #imageContainer {
+    max-width: 90%;
+  }
+  #commentInput {
+      width: 300px;
+      max-width: 500px;
+      margin-bottom: 10px;
+      margin-top: 40px;
+      font-family: "Kanit", sans-serif;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: max-width 0.3s ease-in-out;
+    }
+    
+    .comment {
+      width: 300px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin: 10px auto;
+      background-color: #fff;
+      height: auto;
+      overflow: auto;
+      font-family: "Kanit", sans-serif;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+}
+
   </style>
 </head>
 
@@ -259,4 +299,3 @@
 </body>
 
 </html>
-
