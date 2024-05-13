@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
   
     addTextButton.addEventListener("click", function () {
       isAddingText = !isAddingText;
-      addTextButton.innerText = isAddingText ? "Stop Adding" : "Add Text";
+      addTextButton.innerText = isAddingText ? "Click Picture" : "Add Text";
       if (!isAddingText) {
         textInput.value = "";
       }
