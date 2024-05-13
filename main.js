@@ -153,40 +153,45 @@ function onTouchStart(event) {
     isDrawing = false;
     context.beginPath();
   }
-
-  function startDrawingTouch(e) {
-    if (isAddingText) {
-      addText(e.touches[0]); // Käytä ensimmäistä kosketuspistettä
-    } else {
-      const rect = canvas.getBoundingClientRect();
-      isDrawing = true;
-      context.beginPath();
-      context.moveTo(e.touches[0].pageX - rect.left, e.touches[0].pageY - rect.top); // Muuta clientX ja clientY pageX ja pageY:ksi
-      drawTouch(e);
-    }
-  }
-  
-  function drawTouch(e) {
-    if (!isDrawing || isAddingText) return;
-  
+function startDrawingTouch(e) {
+  if (isAddingText) {
+    addText(e.touches[0]); // Käytä ensimmäistä kosketuspistettä
+  } else {
     const rect = canvas.getBoundingClientRect();
-    context.lineWidth = lineWidth;
-    context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
-  
-    context.lineTo(e.touches[0].pageX - rect.left, e.touches[0].pageY - rect.top); // Muuta clientX ja clientY pageX ja pageY:ksi
-    context.stroke();
+    isDrawing = true;
+    const offsetX = rect.left + window.pageXOffset;
+    const offsetY = rect.top + window.pageYOffset;
     context.beginPath();
-    context.moveTo(e.touches[0].pageX - rect.left, e.touches[0].pageY - rect.top); // Muuta clientX ja clientY pageX ja pageY:ksi
-  
-    // Tallenna piirtoaskeleet
-    const step = {
-      type: "draw",
-      data: context.getImageData(0, 0, canvas.width, canvas.height),
-    };
-    drawingHistory.push(step);
-  
-    e.preventDefault(); 
+    context.moveTo(e.touches[0].pageX - offsetX, e.touches[0].pageY - offsetY);
+    drawTouch(e);
   }
+}
+
+function drawTouch(e) {
+  if (!isDrawing || isAddingText) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const offsetX = rect.left + window.pageXOffset;
+  const offsetY = rect.top + window.pageYOffset;
+
+  context.lineWidth = lineWidth;
+  context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
+
+  context.lineTo(e.touches[0].pageX - offsetX, e.touches[0].pageY - offsetY);
+  context.stroke();
+  context.beginPath();
+  context.moveTo(e.touches[0].pageX - offsetX, e.touches[0].pageY - offsetY);
+
+  // Tallenna piirtoaskeleet
+  const step = {
+    type: "draw",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory.push(step);
+
+  e.preventDefault(); 
+}
+
 
   //UNDO
   function undoDraw() {
