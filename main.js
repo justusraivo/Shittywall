@@ -1,3 +1,18 @@
+//terms
+window.onload = function() {
+  // Tarkista, onko käyttäjä jo hyväksynyt ehdot
+  if (!localStorage.getItem('termsAccepted')) {
+    // Näytä alert
+    alert("I promise not to spread any personal information or hateful content when using this site. By clicking OK I confirm that I am not a jerk. Shitty wall is a shitty site for everyone to enjoy. Have fun!");
+    // Tallenna tieto siitä, että käyttäjä on hyväksynyt ehdot, kun käyttäjä napsauttaa OK-painiketta alert-ikkunassa
+    window.addEventListener('beforeunload', function() {
+      localStorage.setItem('termsAccepted', 'true');
+    });
+  }
+};
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
