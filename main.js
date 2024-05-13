@@ -242,6 +242,7 @@ function onTouchStart(event) {
     isAddingText = false;
     addTextButton.innerText = "Add Text";
     textInput.value = "";
+    textPreview.textContent = "";
 
     commentInput.addEventListener('input', () => {
       const inputLength = commentInput.value.length;
