@@ -1,3 +1,30 @@
+function signInAnonymouslyAndFetchUID() {
+  return new Promise((resolve, reject) => {
+    firebase.auth().signInAnonymously()
+      .then((userCredential) => {
+     
+        resolve(userCredential.user.uid);
+      })
+      .catch((error) => {
+       
+        reject(error);
+      });
+  });
+}
+
+signInAnonymouslyAndFetchUID()
+  .then((uid) => {
+   
+    console.log("Kirjautuminen onnistui! Käyttäjän UID:", uid);
+    
+  })
+  .catch((error) => {
+    // Kirjautuminen epäonnistui, käsittele virhe täällä
+    console.error("Kirjautuminen epäonnistui:", error);
+    
+  });
+
+
 //terms
 window.onload = function() {
   // Tarkista, onko käyttäjä jo hyväksynyt ehdot
