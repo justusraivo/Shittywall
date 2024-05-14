@@ -312,10 +312,19 @@ canvas.addEventListener("mousemove", function (e) {
     });
   }
 
-  const uploadButton = document.getElementById("uploadButton");
-  uploadButton.addEventListener("click", function () {
+//check if logged in
+const uploadButton = document.getElementById("uploadButton");
+uploadButton.addEventListener("click", function () {
+
+  if (firebase.auth().currentUser) {
+
     saveCanvasToFirebase();
-  });
+  } else {
+ 
+    alert("Please log in to upload a picture.");
+
+  }
+});
 
   function saveCanvasToFirebase() {
     if (drawingHistory.length < 150) {
