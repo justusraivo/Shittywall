@@ -126,67 +126,89 @@ body::after {
 
 
 
-        const imageContainer = document.getElementById('imageContainer');
-        let nextPageToken = null;
+      const imageContainer = document.getElementById('imageContainer');
+let lastLoadedTimestamp = null;
+let loadingImages = false;
 
-        function loadImages() {
-            const imagesRef = firebase.storage().ref();
+function loadImages() {
+    loadingImages = true;
+    const imagesRef = firebase.storage().ref();
 
-          //hae kuvat basesta
-            imagesRef.list({
-             
-                pageToken: nextPageToken
-            }).then((res) => {
-                if (res.items.length === 0) {
-                    console.log('Ei lisää kuvia.');
-                    return;
-                }
-
-             
-                nextPageToken = res.nextPageToken;
-
-                // Kerää kaikki getDownloadURL-pyynnöt samanaikaisesti
-                const urlPromises = res.items.map(itemRef => itemRef.getDownloadURL());
-
-                // Odota, että kaikki pyynnöt ovat valmiita
-                Promise.all(urlPromises).then(urls => {
-                    // Järjestä kuvat uusimmasta vanhimpaan
-                    urls.reverse();
-
-                    // Lisää uudet kuvat sivulle
-                    urls.forEach(url => {
-                        // Luo kuvaelementti jokaiselle kuvatiedostolle
-                        const imageElement = document.createElement('img');
-                        imageElement.classList.add('galleryImage');
-                        imageElement.src = url;
-
-                        // Lisää kuva sivulle
-                        imageContainer.appendChild(imageElement);
-                        imageElement.addEventListener('click', () => {
-                            window.location.href = `image.html?url=${encodeURIComponent(url)}`;
-                        });
-                    });
-                });
-
-            }).catch((error) => {
-                console.error('Error fetching images:', error);
-            });
+    imagesRef.listAll().then((res) => {
+        if (res.items.length === 0) {
+            console.log('Ei lisää kuvia.');
+            loadingImages = false;
+            return;
         }
 
-       
-        loadImages();
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-
-            if (scrollY + windowHeight >= documentHeight - 200) {
-            
-                loadImages();
-            }
+        const urlPromises = res.items.map(itemRef => {
+            // Haetaan kuvan URL
+            return itemRef.getDownloadURL().then(url => {
+                // Etsi timestamp kuvan URL-osoitteesta
+                const timestamp = extractTimestampFromURL(url);
+                return { url: url, timestamp: timestamp };
+            });
         });
 
+        Promise.all(urlPromises).then(imageDataArray => {
+            // Järjestetään kuvat timestampin perusteella
+            imageDataArray.sort((a, b) => b.timestamp - a.timestamp);
+
+            // Näytetään kuvat sivulla
+            imageDataArray.forEach(imageData => {
+                const imageUrl = imageData.url;
+
+                // Luo kuvaelementti jokaiselle kuvatiedostolle
+                const imageElement = document.createElement('img');
+                imageElement.classList.add('galleryImage');
+                imageElement.src = imageUrl;
+
+                // Lisää kuva sivulle
+                imageContainer.appendChild(imageElement);
+                imageElement.addEventListener('click', () => {
+                    window.location.href = `image.html?url=${encodeURIComponent(imageUrl)}`;
+                });
+            });
+
+            // Päivitä viimeisen ladatun kuvan aikaleima
+            if (imageDataArray.length > 0) {
+                lastLoadedTimestamp = imageDataArray[imageDataArray.length - 1].timestamp;
+            }
+            loadingImages = false;
+        });
+
+    }).catch((error) => {
+        console.error('Error fetching images:', error);
+        loadingImages = false;
+    });
+}
+
+// Kutsu funktiota sivun latauksen yhteydessä
+loadImages();
+
+// Kuuntele sivun skrollausta ja lataa lisää kuvia tarvittaessa
+window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    // Tarkista, että ollaan riittävän lähellä sivun alareunaa ja että lataus ei ole käynnissä
+    if (scrollY + windowHeight >= documentHeight - 200 && !loadingImages) {
+        // Näytä seuraava sivu, jos mahdollista
+        loadImages();
+    }
+});
+
+// Apufunktio: Erottaa timestampin URL-osoitteesta
+function extractTimestampFromURL(url) {
+    // Oletetaan, että timestamp on URL:n viimeinen osa
+    const parts = url.split('/');
+    const lastPart = parts[parts.length - 1];
+    // Erotetaan timestamp kuvan nimestä (esimerkiksi 'taidekuva_1713042076036.png')
+    const timestampPart = lastPart.split('_')[1];
+    // Palautetaan timestamp kokonaislukuna
+    return parseInt(timestampPart, 10);
+}
         function goToIndex() {
            
             window.location.href = 'index.html';
