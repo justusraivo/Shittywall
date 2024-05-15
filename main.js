@@ -266,39 +266,42 @@ canvas.addEventListener("mousemove", function (e) {
     context.font = `${fontSize}px 'Open Sans', sans-serif`;
     context.fillStyle = strokeColor;
 
-    function wrapText(context, text, x, y, maxWidth, lineHeight) {
-      var words = text.split(' ');
-      var line = '';
-
-      for (var n = 0; n < words.length; n++) {
-        var testLine = line + words[n] + '';
-        var metrics = context.measureText(testLine);
-        var testWidth = metrics.width;
-        if (testWidth > maxWidth && n > 0) {
-          context.fillText(line, x, y);
-          line = words[n] + ' ';
-          y += lineHeight;
-        }
-        else {
-          line = testLine;
-        }
+function wrapText(context, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+  
+    for (var n = 0; n < words.length; n++) {
+      var testLine = line + words[n];
+      var metrics = context.measureText(testLine);
+      var testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        context.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
       }
-      context.fillText(line, x, y);
+      else {
+        line = testLine + (n < words.length - 1 ? ' ' : ''); 
+      }
     }
+    context.fillText(line, x, y);
+  }
+  const lineHeight = fontSize * 1.2;
+  wrapText(context, text, e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top, maxWidth, lineHeight);
 
-    const lineHeight = fontSize * 1.2;
-    wrapText(context, text, e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top, maxWidth, lineHeight);
+  const step = {
+    type: "text",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory.push(step);
 
-    const step = {
-      type: "text",
-      data: context.getImageData(0, 0, canvas.width, canvas.height),
-    };
-    drawingHistory.push(step);
+ 
+ 
 
-    isAddingText = false;
-    addTextButton.innerText = "Add Text";
-    textInput.value = "";
-    textPreview.textContent = "";
+  isAddingText = false;
+  addTextButton.innerText = "Add Text";
+  textInput.value = "";
+  textPreview.textContent = "";
+
 
     commentInput.addEventListener('input', () => {
       const inputLength = commentInput.value.length;
