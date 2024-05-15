@@ -15,7 +15,7 @@ function signInAnonymouslyAndFetchUID() {
 signInAnonymouslyAndFetchUID()
   .then((uid) => {
    
-    console.log("Kirjautuminen onnistui! Käyttäjän UID:", uid);
+    console.log("Kirjautuminen onnistui!);
     
   })
   .catch((error) => {
@@ -134,11 +134,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("mouseup", stopDrawing);
     canvas.addEventListener("mouseout", stopDrawing);
   
-    // Kosketustapahtumat
+  
     window.addEventListener('touchstart', onTouchStart, { passive: true });
 
 function onTouchStart(event) {
-    // Tapahtumankäsittelijän toiminta
+   
 }
 
     canvas.addEventListener("touchstart", startDrawingTouch);
@@ -339,7 +339,7 @@ uploadButton.addEventListener("click", function () {
     link.href = canvas.toDataURL("image/png");
     link.download = "taidekuva.png";
 
-    // Luo Blob-objekti ja tallenna se Firebaseen
+  
     const blob = dataURItoBlob(canvas.toDataURL("image/png"));
     const storageRef = firebase.storage().ref();
     const imageName = `taidekuva_${new Date().getTime()}.png`;
@@ -349,7 +349,7 @@ uploadButton.addEventListener("click", function () {
     imageRef.put(blob).then(function (snapshot) {
         console.log("Kuva ladattu Firebaseen onnistuneesti!");
 
-        // Haetaan kuvalle URL Firebase Storagesta
+       
         imageRef.getDownloadURL().then(function (imageUrl) {
             // Tallenna kuvan metatiedot Firebaseen
             const metadata = {
@@ -372,7 +372,7 @@ uploadButton.addEventListener("click", function () {
     });
 }
 
-// Apufunktio: Muuntaa data-URL Blob-objektiksi
+
 function dataURItoBlob(dataURI) {
     const byteString = atob(dataURI.split(",")[1]);
     const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
