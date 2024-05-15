@@ -9,10 +9,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4428703355328825"
      crossorigin="anonymous"></script>
     <style>
-        /* Lisää tarvittaessa tyyliä gallerian ulkoasulle */
+        
         body {
     text-align: center;
     font-family: "Kanit", sans-serif;
@@ -51,13 +53,13 @@ body::after {
            
         }
         button {
-  background-color: #fbeee0;
+  background-color: #fffffe;
   border: 2px solid #363636;
   box-shadow: #422800 4px 4px 0 0;
   color: #252525;
   cursor: pointer;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: center; 
   font-weight: 600;
   font-size: 18px;
@@ -82,13 +84,46 @@ body::after {
 
         #drawMoreButtonContainer {
             position: fixed;
-            top: 10px;
+            top: 50px;
             right: 10px;
             z-index: 999; 
             font-family: "Kanit", sans-serif;
+            display: hidden;
             
         }
         
+        #hamburgerMenuIcon {
+            font-size: 30px;
+    display: block; 
+    position: fixed; 
+    top: 10px;
+    right: 10px;
+    z-index: 1000; 
+    cursor: pointer;
+  }
+¨
+ 
+  
+
+
+@media only screen and (max-width: 1200px) {}
+  #drawMoreButtonContainer {
+    display: none;
+  }
+  
+
+  #hamburgerMenuIcon {
+    font-size: 30px;
+    display: block; 
+    position: fixed; 
+    top: 10px;
+    right: 10px;
+    z-index: 1000; 
+    cursor: pointer;
+  }
+
+
+
        
     </style>
 </head>
@@ -102,6 +137,22 @@ body::after {
         <button onclick="goToMostCommented()">Popular</button>
         <button onclick="goToLast24()">Trending</button>
     </div>
+    
+   
+    <div id="hamburgerMenuIcon">
+        <i class="fas fa-bars"></i> 
+    </div>
+    
+    <script>
+      
+        document.getElementById('hamburgerMenuIcon').addEventListener('click', function() {
+            
+            var drawMoreButtonContainer = document.getElementById('drawMoreButtonContainer');
+            drawMoreButtonContainer.style.display = (drawMoreButtonContainer.style.display === 'none' || drawMoreButtonContainer.style.display === '') ? 'block' : 'none';
+            hamburgerMenuIcon.style.display === 'none';
+        });
+    </script>
+
 
     <div id="imageContainer"></div>
 
@@ -124,9 +175,7 @@ body::after {
         // Alusta Firebase
         firebase.initializeApp(firebaseConfig);
 
-
-
-      const imageContainer = document.getElementById('imageContainer');
+        const imageContainer = document.getElementById('imageContainer');
 let lastLoadedTimestamp = null;
 let loadingImages = false;
 
@@ -142,35 +191,34 @@ function loadImages() {
         }
 
         const urlPromises = res.items.map(itemRef => {
-           
+    
             return itemRef.getDownloadURL().then(url => {
-              
+             
                 const timestamp = extractTimestampFromURL(url);
                 return { url: url, timestamp: timestamp };
             });
         });
 
         Promise.all(urlPromises).then(imageDataArray => {
-            
+        
             imageDataArray.sort((a, b) => b.timestamp - a.timestamp);
 
          
             imageDataArray.forEach(imageData => {
                 const imageUrl = imageData.url;
 
-             
+            
                 const imageElement = document.createElement('img');
                 imageElement.classList.add('galleryImage');
                 imageElement.src = imageUrl;
 
-               
+         
                 imageContainer.appendChild(imageElement);
                 imageElement.addEventListener('click', () => {
                     window.location.href = `image.html?url=${encodeURIComponent(imageUrl)}`;
                 });
             });
 
-           
             if (imageDataArray.length > 0) {
                 lastLoadedTimestamp = imageDataArray[imageDataArray.length - 1].timestamp;
             }
@@ -192,23 +240,24 @@ window.addEventListener('scroll', () => {
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
 
-
     if (scrollY + windowHeight >= documentHeight - 200 && !loadingImages) {
       
         loadImages();
     }
 });
 
-// Apufunktio: Erottaa timestampin URL-osoitteesta
+
 function extractTimestampFromURL(url) {
-    
+
     const parts = url.split('/');
     const lastPart = parts[parts.length - 1];
- 
+   
     const timestampPart = lastPart.split('_')[1];
 
     return parseInt(timestampPart, 10);
 }
+
+
         function goToIndex() {
            
             window.location.href = 'index.html';
