@@ -56,9 +56,9 @@ body::after {
   box-shadow: #422800 4px 4px 0 0;
   color: #252525;
   cursor: pointer;
-  display: flex; /* Käytä flexboxia */
-  align-items: center; /* Keskitä teksti pystysuunnassa */
-  justify-content: center; /* Keskitä teksti vaakasuunnassa */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
   font-weight: 600;
   font-size: 18px;
   padding: 0 18px;
@@ -68,9 +68,9 @@ body::after {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  margin: 10px auto; /* Keskitä napit sivulla */
+  margin: 10px auto; 
   width: 100px;
-  margin-right: 20px; /* Luo tyhjää tilaa oikealle puolelle */
+  margin-right: 20px; 
 }
 
         .commentSection {
@@ -82,7 +82,7 @@ body::after {
 
         #drawMoreButtonContainer {
             position: fixed;
-            top: 10px;/* Määrittää napin etäisyyden yläreunasta */
+            top: 10px;
             right: 10px;
             z-index: 999; 
             font-family: "Kanit", sans-serif;
@@ -142,35 +142,35 @@ function loadImages() {
         }
 
         const urlPromises = res.items.map(itemRef => {
-            // Haetaan kuvan URL
+           
             return itemRef.getDownloadURL().then(url => {
-                // Etsi timestamp kuvan URL-osoitteesta
+              
                 const timestamp = extractTimestampFromURL(url);
                 return { url: url, timestamp: timestamp };
             });
         });
 
         Promise.all(urlPromises).then(imageDataArray => {
-            // Järjestetään kuvat timestampin perusteella
+            
             imageDataArray.sort((a, b) => b.timestamp - a.timestamp);
 
-            // Näytetään kuvat sivulla
+         
             imageDataArray.forEach(imageData => {
                 const imageUrl = imageData.url;
 
-                // Luo kuvaelementti jokaiselle kuvatiedostolle
+             
                 const imageElement = document.createElement('img');
                 imageElement.classList.add('galleryImage');
                 imageElement.src = imageUrl;
 
-                // Lisää kuva sivulle
+               
                 imageContainer.appendChild(imageElement);
                 imageElement.addEventListener('click', () => {
                     window.location.href = `image.html?url=${encodeURIComponent(imageUrl)}`;
                 });
             });
 
-            // Päivitä viimeisen ladatun kuvan aikaleima
+           
             if (imageDataArray.length > 0) {
                 lastLoadedTimestamp = imageDataArray[imageDataArray.length - 1].timestamp;
             }
@@ -183,30 +183,30 @@ function loadImages() {
     });
 }
 
-// Kutsu funktiota sivun latauksen yhteydessä
+
 loadImages();
 
-// Kuuntele sivun skrollausta ja lataa lisää kuvia tarvittaessa
+
 window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
 
-    // Tarkista, että ollaan riittävän lähellä sivun alareunaa ja että lataus ei ole käynnissä
+
     if (scrollY + windowHeight >= documentHeight - 200 && !loadingImages) {
-        // Näytä seuraava sivu, jos mahdollista
+      
         loadImages();
     }
 });
 
 // Apufunktio: Erottaa timestampin URL-osoitteesta
 function extractTimestampFromURL(url) {
-    // Oletetaan, että timestamp on URL:n viimeinen osa
+    
     const parts = url.split('/');
     const lastPart = parts[parts.length - 1];
-    // Erotetaan timestamp kuvan nimestä (esimerkiksi 'taidekuva_1713042076036.png')
+ 
     const timestampPart = lastPart.split('_')[1];
-    // Palautetaan timestamp kokonaislukuna
+
     return parseInt(timestampPart, 10);
 }
         function goToIndex() {
