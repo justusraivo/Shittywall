@@ -15,7 +15,7 @@ function signInAnonymouslyAndFetchUID() {
 signInAnonymouslyAndFetchUID()
   .then((uid) => {
    
-    console.log("Kirjautuminen onnistui!);
+
     
   })
   .catch((error) => {
