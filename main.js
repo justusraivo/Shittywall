@@ -19,7 +19,7 @@ signInAnonymouslyAndFetchUID()
     
   })
   .catch((error) => {
-    // Kirjautuminen epäonnistui, käsittele virhe täällä
+    
     console.error("Kirjautuminen epäonnistui:", error);
     
   });
@@ -27,11 +27,11 @@ signInAnonymouslyAndFetchUID()
 
 //terms
 window.onload = function() {
-  // Tarkista, onko käyttäjä jo hyväksynyt ehdot
+
   if (!localStorage.getItem('termsAccepted')) {
     // Näytä alert
     alert("I promise not to spread any personal information or hateful content when using this site. By clicking OK I confirm that I am not a jerk. Shitty wall is a shitty site for everyone to enjoy. Have fun!");
-    // Tallenna tieto siitä, että käyttäjä on hyväksynyt ehdot, kun käyttäjä napsauttaa OK-painiketta alert-ikkunassa
+  
     window.addEventListener('beforeunload', function() {
       localStorage.setItem('termsAccepted', 'true');
     });
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     context.fillRect(0, 0, canvas.width, canvas.height);
   
   
-    // Muut koodit ja tapahtumankäsittelijät...
+    
   
 
   
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let strokeColor = "#000";
     let fontSize = 20;
   
-    let drawingHistory = []; // Taulukko tallentamaan piirtoaskeleet
+    let drawingHistory = []; 
   
     const colorPicker = document.getElementById("colorPicker");
     const changeCanvasButton = document.getElementById("changeCanvas");
@@ -182,7 +182,7 @@ function onTouchStart(event) {
   }
 function startDrawingTouch(e) {
   if (isAddingText) {
-    addText(e.touches[0]); // Käytä ensimmäistä kosketuspistettä
+    addText(e.touches[0]); 
   } else {
     const rect = canvas.getBoundingClientRect();
     isDrawing = true;
@@ -387,5 +387,4 @@ function dataURItoBlob(dataURI) {
     return new Blob([ab], { type: mimeString });
 }
 
-// Muut koodit ja tapahtumankäsittelijät...
 });
