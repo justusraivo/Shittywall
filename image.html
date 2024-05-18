@@ -6,15 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shitty Wall - Draw art fast, doodle, have fun, anonymous anarchy, paint, inspiration, comment</title>
   <link rel="icon" href="tilelogo.png" type="image/png">
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <script src="https://www.google.com/recaptcha/api.js?render=6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I"></script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4428703355328825"
-     crossorigin="anonymous"></script>
-  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4428703355328825" crossorigin="anonymous"></script>
 
   <style>
     body {
@@ -37,7 +34,6 @@
       height: 100%;
       background-color: #ecd167;
       z-index: -1;
-      
     }
 
     #imageContainer {
@@ -47,8 +43,6 @@
       border: 1px solid #ddd;
       position: inherit;
     }
-
-
 
     #commentInput {
       width: 100%;
@@ -91,7 +85,6 @@
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-  
     .button-74:active {
       box-shadow: #323232 2px 2px 0 0;
       transform: translate(2px, 2px);
@@ -111,130 +104,138 @@
       cursor: pointer;
       padding: 30px;
     }
+
     button {
-  background-color: #fffffe;
-  border: 2px solid #363636;
-  box-shadow: #422800 4px 4px 0 0;
-  color: #252525;
-  cursor: pointer;
-  display: flex; /* Käytä flexboxia */
-  align-items: center; /* Keskitä teksti pystysuunnassa */
-  justify-content: center; /* Keskitä teksti vaakasuunnassa */
-  font-weight: 600;
-  font-size: 18px;
-  padding: 0 18px;
-  line-height: 50px;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin: 10px auto; /* Keskitä napit sivulla */
-  width: 100px;
-  margin-right: 20px; /* Luo tyhjää tilaa oikealle puolelle */
-}
-    
-#drawMoreButtonContainer {
-    position: fixed;
-    top: 50px;
-    right: 10px;
-    z-index: 999; 
-    font-family: "Kanit", sans-serif;
-    display: none; /* Korjattu */
-    
-    
-}
-        
-        #hamburgerMenuIcon {
-            font-size: 30px;
-    display: block; /* Näytä hampurilaisvalikon kuvake */
-    position: fixed; /* Kiinnitä se sivun yläreunaan */
-    top: 10px;
-    right: 10px;
-    z-index: 1000; /* Varmista, että se on päällimmäisenä muiden elementtien päällä */
-    cursor: pointer;
-  }
-    @media screen and (max-width: 800px) {
-  
-
-
-  #imageContainer {
-    max-width: 95%;
-  }
-  #commentInput {
-      width: 300px;
-      max-width: 500px;
-      margin-bottom: 10px;
-      margin-top: 40px;
-      font-family: "Kanit", sans-serif;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 10px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      transition: max-width 0.3s ease-in-out;
+      background-color: #fffffe;
+      border: 2px solid #363636;
+      box-shadow: #422800 4px 4px 0 0;
+      color: #252525;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+      padding: 0 18px;
+      line-height: 50px;
+      text-align: center;
+      text-decoration: none;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      margin: 10px auto;
+      width: 100px;
+      margin-right: 20px;
     }
 
-    #commentList {
-  list-style: none;
-  padding: 0;
-  width: 80%;
-  font-family: "Kanit", sans-serif;
-  margin: 0 auto; 
-}
+    #drawMoreButtonContainer {
+      position: fixed;
+      top: 50px;
+      right: 10px;
+      z-index: 999;
+      font-family: "Kanit", sans-serif;
+      display: none;
+    }
 
-.comment {
-  width: 300px;
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin: 10px auto; 
-  background-color: #fff;
-  height: auto;
-  overflow: auto;
-  font-family: "Kanit", sans-serif;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    #hamburgerMenuIcon {
+      font-size: 30px;
+      display: block;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      cursor: pointer;
+    }
 
+    @media screen and (max-width: 800px) {
+      #imageContainer {
+        max-width: 95%;
+      }
 
-  .comment-image {
-  cursor: pointer; 
-  max-width: none; 
-  max-height: none; 
-}
-}
-¨
- 
-  
+      #commentInput {
+        width: 300px;
+        max-width: 500px;
+        margin-bottom: 10px;
+        margin-top: 40px;
+        font-family: "Kanit", sans-serif;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: max-width 0.3s ease-in-out;
+      }
 
+      #commentList {
+        list-style: none;
+        padding: 0;
+        width: 80%;
+        font-family: "Kanit", sans-serif;
+        margin: 0 auto;
+      }
 
-@media only screen and (max-width: 1200px) {}
-  #drawMoreButtonContainer {
-    display: none;
-  }
-  
-  /* Näytä hampurilaisvalikko */
-  #hamburgerMenuIcon {
-    font-size: 30px;
-    display: block; 
-    position: fixed; 
-    top: 10px;
-    right: 10px;
-    z-index: 1000; 
-    cursor: pointer;
-  }
-#imageContainer {
-    max-width: 95%;
-  }
-    @media screen and (max-width: 768px) {
-  canvas {
-    width: 350px;
-    height: 350px;
-  }
-}
+      .comment {
+        width: 300px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin: 10px auto;
+        background-color: #fff;
+        height: auto;
+        overflow: auto;
+        font-family: "Kanit", sans-serif;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
 
-    
+      .comment-image {
+        cursor: pointer;
+        max-width: none;
+        max-height: none;
+      }
+
+      /* Set the size of the image to 350x350 on mobile devices */
+      #imageView {
+        width: 350px;
+        height: 350px;
+        object-fit: cover; /* Maintain aspect ratio, center cropped */
+      }
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    @media only screen and (max-width: 1200px) {
+      #drawMoreButtonContainer {
+        display: none;
+      }
+
+      /* Näytä hampurilaisvalikko */
+      #hamburgerMenuIcon {
+        font-size: 30px;
+        display: block;
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+        cursor: pointer;
+      }
+
+      #imageContainer {
+        max-width: 95%;
+        box-sizing: border-box;
+      }
+
+      canvas {
+        width: 350px;
+        height: 350px;
+      }
+    }
   </style>
 </head>
 
@@ -246,33 +247,28 @@
     <button onclick="goToIndex()">Create</button>
     <button onclick="goToMostCommented()">Popular</button>
     <button onclick="goToLast24()">Trending</button>
-</div>
+  </div>
 
+  <div id="hamburgerMenuIcon">
+    <i class="fas fa-bars"></i>
+  </div>
 
-<div id="hamburgerMenuIcon">
-    <i class="fas fa-bars"></i> 
-</div>
-
-<script>
-  
+  <script>
     document.getElementById('hamburgerMenuIcon').addEventListener('click', function() {
-        
-        var drawMoreButtonContainer = document.getElementById('drawMoreButtonContainer');
-        drawMoreButtonContainer.style.display = (drawMoreButtonContainer.style.display === 'none' || drawMoreButtonContainer.style.display === '') ? 'block' : 'none';
-        hamburgerMenuIcon.style.display === 'none';
+      var drawMoreButtonContainer = document.getElementById('drawMoreButtonContainer');
+      drawMoreButtonContainer.style.display = (drawMoreButtonContainer.style.display === 'none' || drawMoreButtonContainer.style.display === '') ? 'block' : 'none';
+      hamburgerMenuIcon.style.display === 'none';
     });
-</script>
-
-
+  </script>
 
   <div id="imageContainer">
     <img id="imageView" src="" alt="Large Image">
   </div>
-  
+
   <span id="commentCount">0 comments</span>
   <input type="text" id="commentInput" placeholder="Write a comment...">
   <span id="characterCount">0 / 500</span>
-  <img src="comment.png" alt="Comment" class = "comment-image" onclick="onClick(event)">
+  <img src="comment.png" alt="Comment" class="comment-image" onclick="onClick(event)">
 
   <ul id="commentList"></ul>
 
@@ -287,7 +283,6 @@
         grecaptcha.execute('6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I', { action: 'LOGIN' })
           .then(token => {
             submitComment(token);
-          
           });
       });
     }
@@ -346,26 +341,25 @@
 
     firebase.initializeApp(firebaseConfig);
 
-    let lastCommentTime = 0; 
+    let lastCommentTime = 0;
 
-function onClick(e) {
-  e.preventDefault();
-  
-  
-  const currentTime = new Date().getTime();
-  if (currentTime - lastCommentTime < 2000) {
-    alert("Don't spam, please!");
-    return; 
-  }
+    function onClick(e) {
+      e.preventDefault();
 
-  grecaptcha.ready(() => {
-    grecaptcha.execute('6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I', { action: 'LOGIN' })
-      .then(token => {
-        submitComment(token);
-        lastCommentTime = currentTime; 
+      const currentTime = new Date().getTime();
+      if (currentTime - lastCommentTime < 2000) {
+        alert("Don't spam, please!");
+        return;
+      }
+
+      grecaptcha.ready(() => {
+        grecaptcha.execute('6LeFNbopAAAAAJGNOtcsX1eDpExgjri_oqhTOW7I', { action: 'LOGIN' })
+          .then(token => {
+            submitComment(token);
+            lastCommentTime = currentTime;
+          });
       });
-  });
-}
+    }
 
     const urlParams = new URLSearchParams(window.location.search);
     const imageUrl = decodeURIComponent(urlParams.get('url'));
@@ -398,25 +392,21 @@ function onClick(e) {
       commentCount.textContent = `${commentItems.length} Comments`;
     }
 
-    
     function goToIndex() {
-           
-           window.location.href = 'index.html';
-       }
-       function goToMostCommented() {
-         
-           window.location.href = 'kokeilugalleria.html';
-       }
+      window.location.href = 'index.html';
+    }
 
-       function goToGallery() {
-     
-           window.location.href = 'tykatyimmat.html';
-       }
-       function goToLast24() {
-          
-           window.location.href = 'viim24.html';
-       }
+    function goToMostCommented() {
+      window.location.href = 'kokeilugalleria.html';
+    }
 
+    function goToGallery() {
+      window.location.href = 'tykatyimmat.html';
+    }
+
+    function goToLast24() {
+      window.location.href = 'viim24.html';
+    }
   </script>
 
 </body>
