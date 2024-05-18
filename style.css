@@ -291,7 +291,7 @@ label {
     cursor: pointer; 
     padding: 30px;
   }
-  canvas {
+  .canvas {
     width: 350px;
     height: 350px;
   }
