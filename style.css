@@ -172,110 +172,22 @@ label {
 #textInput:focus {
   border-color: #0099ff; /* Muutetaan reunan väriä aktiivisena ollessa */
   box-shadow: 0 0 5px rgba(0, 153, 255, 0.5); /* Lisätään varjostus */
+
 }
 
-@media (min-width: 768px) {
-  .button-74 {
-    min-width: 120px;
-    padding: 0 25px;
-  }
-}
+.upload-button {
 
-
-  .slider {
-    -webkit-appearance: none;
-    
-    width: 400px;
-    height: 25px;
-    background: #dfe9b3;
-    outline: none;
-   
-    display: block;
-    margin: 0 auto;
-    padding: 5px; /* Esimerkki: lisää 10px pehmustetta */
-    box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
-  }
-
-
-
-.slider:hover {
-  opacity: 1;
-}
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 50px;
-  height: 50px;
-  background-image: url("harja3.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
-  background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
-  
   cursor: pointer;
-}
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #e8cd7c;
-  cursor: pointer;
-}
-
-.slider2 {
-  -webkit-appearance: none;
-  width: 400px;
-  height: 25px;
-  background: #dfe9b3;
-  outline: none;
  
   display: block;
-  margin: 0 auto;
-  padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
-  box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
+  margin: 100px auto;
+  cursor: pointer;
 }
 
 
-
-.slider2:hover {
-opacity: 1;
-}
-.slider2::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 50px;
-height: 50px;
-background-image: url("fontsize.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
-background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
-
-cursor: pointer;
-}
-.slider2::-moz-range-thumb {
-width: 25px;
-height: 25px;
-background: #e8cd7c;
-cursor: pointer;
-}
-
-
-.brushSizeDisplay {
-  position: relative;
-  box-sizing: border-box;
-}
-
-
-.gallery-image {
-
-  height: 90px;
-  width: 90px;
-  cursor: pointer; 
-  padding: 30px;
-}
-
-.label-text {
-  color: rgb(75, 75, 75); 
-  font-weight: bold; 
-  font-size: 16px; 
-}
 
 @media screen and (max-width: 1600px) {
-  /* Tähän tulee säännöt, jotka haluat soveltaa kun näyttö on enintään 768 pikseliä leveä */
+  /* Tähän tulee säännöt, jotka haluat soveltaa kun näyttö on enintään 1600 pikseliä leveä */
   body {
     text-align: center;
     font-family: "Kanit", sans-serif;
@@ -300,8 +212,6 @@ cursor: pointer;
     touch-action: manipulation;
     display: block;
     margin: 10px auto;
-   
-    
   }
 
   .slider {
@@ -310,85 +220,79 @@ cursor: pointer;
     height: 25px;
     background: #fdfdfd;
     outline: none;
-   
     display: block;
     margin: 0 auto;
     padding: 10px; /* Esimerkki: lisää 10px pehmustetta */
     box-sizing: border-box; /* varmista, että padding ei kasvata elementin kokoa */
   }
 
+  .slider:hover {
+    opacity: 1;
+  }
 
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    background-image: url("harja3.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
+    background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
+    cursor: pointer;
+  }
 
-.slider:hover {
-  opacity: 1;
-}
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 50px;
-  height: 50px;
-  background-image: url("harja3.png"); /* Korvaa "polku/kuvaan.png" oikealla kuvapolulla */
-  background-size: cover; /* Voit säätää kuvan koon tarpeidesi mukaan */
-  
-  cursor: pointer;
-}
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #e8cd7c;
-  cursor: pointer;
-}
+  .slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #e8cd7c;
+    cursor: pointer;
+  }
 
-.slider2 {
-  -webkit-appearance: none;
-  width: 300px;
-  height: 25px;
-  background: #fffcfc;
-  outline: none;
- 
-  display: block;
-  margin: 0 auto;
-  padding: 10px;
-  box-sizing: border-box; 
-}
+  .slider2 {
+    -webkit-appearance: none;
+    width: 300px;
+    height: 25px;
+    background: #fffcfc;
+    outline: none;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box; 
+  }
 
+  .slider2:hover {
+    opacity: 1;
+  }
 
+  .slider2::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    background-image: url("fontsize.png"); 
+    background-size: cover; 
+    cursor: pointer;
+  }
 
-.slider2:hover {
-opacity: 1;
-}
-.slider2::-webkit-slider-thumb {
--webkit-appearance: none;
-appearance: none;
-width: 50px;
-height: 50px;
-background-image: url("fontsize.png"); 
-background-size: cover; 
+  .slider2::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #e8cd7c;
+    cursor: pointer;
+  }
 
-cursor: pointer;
-}
-.slider2::-moz-range-thumb {
-width: 25px;
-height: 25px;
-background: #e8cd7c;
-cursor: pointer;
-}
+  #canvas-container {
+    width: 95%;
+    margin: 0 auto; 
+  }
 
-#canvas-container {
-  width: 100%;
- 
-  margin: 0 auto; 
-}
-
-   
-.gallery-image {
-
-  height: 90px;
-  width: 90px;
-  cursor: pointer; 
-  padding: 30px;
-}
-
-
-
+  .gallery-image {
+    height: 90px;
+    width: 90px;
+    cursor: pointer; 
+    padding: 30px;
+  }
+  canvas {
+    width: 350px;
+    height: 350px;
+  }
 }
