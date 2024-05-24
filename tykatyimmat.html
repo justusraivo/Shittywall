@@ -15,7 +15,7 @@
      crossorigin="anonymous"></script>
     <style>
         
-        body {
+     body {
     text-align: center;
     font-family: "Kanit", sans-serif;
     background: radial-gradient(ellipse at 50% 35%, rgb(255, 255, 255), antiquewhite 40%);
@@ -32,77 +32,95 @@ body::after {
     z-index: -1;
 }
 
-        #imageContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        h1,
-        h2,
-        h3 {
-            text-align: center;
-            font-family: "Kanit", sans-serif;
-        }
-
-        .galleryImage {
-            max-width: 100%;
-            cursor: pointer;
-            max-width: 400px;
-           max-height: 400px;
-           
-        }
-        button {
-  background-color: #fffffe;
-  border: 2px solid #363636;
-  box-shadow: #422800 4px 4px 0 0;
-  color: #252525;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-  font-weight: 600;
-  font-size: 18px;
-  padding: 0 18px;
-  line-height: 50px;
-  text-align: center;
-  text-decoration: none;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  margin: 10px auto; 
-  width: 100px;
-  margin-right: 20px; 
+#imageContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-        .commentSection {
-            display: none;
-            margin-top: 10px;
-        }
+h1,
+h2,
+h3 {
+    text-align: center;
+    font-family: "Kanit", sans-serif;
+}
 
-       
+.galleryImage {
+    max-width: 100%;
+    cursor: pointer;
+    max-width: 400px;
+    max-height: 400px;
+}
 
-        #drawMoreButtonContainer {
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            z-index: 999; 
-            font-family: "Kanit", sans-serif;
-            display: hidden;
-            
-        }
-        
-        #hamburgerMenuIcon {
-            font-size: 30px;
+button {
+    background-color: #fffffe;
+    border: 2px solid #363636;
+    box-shadow: #422800 4px 4px 0 0;
+    color: #252525;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 18px;
+    line-height: 50px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 10px auto; 
+    width: 100px;
+    margin-right: 20px; 
+}
+
+.commentSection {
+    display: none;
+    margin-top: 10px;
+}
+
+#drawMoreButtonContainer {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    z-index: 999; 
+    font-family: "Kanit", sans-serif;
+    display: hidden;
+}
+
+#hamburgerMenuIcon {
+    font-size: 30px;
     display: block; 
     position: fixed; 
     top: 10px;
     right: 10px;
     z-index: 1000; 
     cursor: pointer;
-  }
-¨
- 
+}
+
+@media only screen and (max-width: 768px) {
+    #drawMoreButtonContainer {
+        display: none;
+    }
+
+    #hamburgerMenuIcon {
+        font-size: 30px;
+        display: block; 
+        position: fixed; 
+        top: 10px;
+        right: 10px;
+        z-index: 1000; 
+        cursor: pointer;
+    }
+
+    .galleryImage {
+        max-width: 100%;
+        cursor: pointer;
+        max-width: 350px;
+        max-height: 350px;
+    }
+}
   
 
 
