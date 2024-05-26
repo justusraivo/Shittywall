@@ -47,20 +47,20 @@ document.addEventListener("DOMContentLoaded", function () {
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  canvas.addEventListener("mousemove", function (e) {
+canvas.addEventListener("mousemove", function (e) {
   if (isAddingText) {
     canvas.style.cursor = "text";
   } else {
     canvas.style.cursor = "pointer";
   }
 
-  if (isDrawing && e.buttons === 1) {
+  if (isDrawing && (e.buttons === 1 || e.buttons === undefined)) {
     draw(e);
   }
 });
 
 canvas.addEventListener("mouseleave", function (e) {
-  if (isDrawing && e.buttons === 1) {
+  if (isDrawing && (e.buttons === 1 || e.buttons === undefined)) {
     isDrawing = false;
     context.beginPath();
   }
