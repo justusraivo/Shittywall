@@ -2,9 +2,11 @@ function signInAnonymouslyAndFetchUID() {
   return new Promise((resolve, reject) => {
     firebase.auth().signInAnonymously()
       .then((userCredential) => {
+     
         resolve(userCredential.user.uid);
       })
       .catch((error) => {
+       
         reject(error);
       });
   });
@@ -12,28 +14,44 @@ function signInAnonymouslyAndFetchUID() {
 
 signInAnonymouslyAndFetchUID()
   .then((uid) => {
+   
     console.log("Kirjautuminen onnistui! Käyttäjän UID:", uid);
+    
   })
   .catch((error) => {
+ 
     console.error("Kirjautuminen epäonnistui:", error);
+    
   });
 
 window.onload = function() {
+
   if (!localStorage.getItem('termsAccepted')) {
+    // Näytä alert
     alert("By using this site I promise not to spread any personal information or hateful content. By clicking OK I confirm that I am not a jerk.");
+   
     window.addEventListener('beforeunload', function() {
       localStorage.setItem('termsAccepted', 'true');
     });
   }
 };
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
   canvas.getContext('2d', { willReadFrequently: true });
  
+ 
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, canvas.width, canvas.height);
+
+
+  
+
+
+
 
   let isDrawing = false;
   let isErasing = false;
@@ -43,15 +61,16 @@ document.addEventListener("DOMContentLoaded", function () {
   let strokeColor = "#000";
   let fontSize = 20;
 
-  let drawingHistory = [];
+  let drawingHistory = []; // Taulukko tallentamaan piirtoaskeleet
 
   const colorPicker = document.getElementById("colorPicker");
   const changeCanvasButton = document.getElementById("changeCanvas");
   const brushSize = document.getElementById("brushSize");
+ 
   const textInput = document.getElementById("textInput");
   const fontSizeInput = document.getElementById("fontSizeInput");
   const addTextButton = document.getElementById("addTextButton");
-  const undoButton = document.getElementById("undoButton");
+  const undoButton = document.getElementById("undoButton"); // Uusi nappi kumomista varten
 
   colorPicker.addEventListener("input", function () {
     strokeColor = colorPicker.value;
@@ -62,22 +81,32 @@ document.addEventListener("DOMContentLoaded", function () {
     changeCanvasColor(newColor);
   });
 
+  
+
   randomColor();
 
   function randomColor() {
+  
     var randomColor = '#' + Math.floor(Math.random()*16777215).toString(16); 
+
     context.fillStyle = randomColor;
     context.fillRect(0, 0, canvas.width, canvas.height);  
-  }
-  
+}
   function changeCanvasColor(newColor) {
+    // Aseta uusi taustaväri
     context.fillStyle = newColor;
     context.fillRect(0, 0, canvas.width, canvas.height);
+
+    
   }
 
   brushSize.addEventListener("input", function () {
     lineWidth = brushSize.value;
   });
+
+ 
+
+
 
   fontSizeInput.addEventListener("input", function () {
     fontSize = fontSizeInput.value;
@@ -104,34 +133,165 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("mouseup", stopDrawing);
   canvas.addEventListener("mouseout", stopDrawing);
 
-  window.addEventListener('touchstart', onTouchStart, { passive: true });
+ // Kosketustapahtumat
+window.addEventListener('touchstart', onTouchStart, { passive: true });
 
-  function onTouchStart(event) {
-    // Placeholder for touch event handler
+function onTouchStart(event) {
+  // Tapahtumankäsittelijän toiminta
+}
+
+canvas.addEventListener("touchstart", startDrawingTouch);
+canvas.addEventListener("touchmove", drawTouch);
+canvas.addEventListener("touchend", stopDrawing);
+
+function startDrawing(e) {
+  if (isAddingText) {
+    addText(e);
+  } else {
+    isDrawing = true;
+    context.beginPath();
+    context.moveTo(
+      (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
+      (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
+    );
+    draw(e);
+  }
+}
+
+function draw(e) {
+  if (!isDrawing || isAddingText) return;
+
+  context.lineWidth = lineWidth;
+  context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
+
+  context.lineTo(
+    (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
+    (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
+  );
+  context.stroke();
+  context.beginPath();
+  context.moveTo(
+    (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
+    (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
+  );
+
+  // Tallenna piirtoaskeleet
+  const step = {
+    type: "draw",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory.push(step);
+}
+
+function stopDrawing() {
+  if (isAddingText) return;
+  isDrawing = false;
+  context.beginPath();
+}
+
+function startDrawingTouch(e) {
+  if (isAddingText) {
+    addText(e.touches[0]); // Käytä ensimmäistä kosketuspistettä
+  } else {
+    const rect = canvas.getBoundingClientRect();
+    isDrawing = true;
+    const offsetX = rect.left + window.pageXOffset;
+    const offsetY = rect.top + window.pageYOffset;
+    context.beginPath();
+    context.moveTo(
+      (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
+      (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
+    );
+    drawTouch(e);
+  }
+}
+
+function drawTouch(e) {
+  if (!isDrawing || isAddingText) return;
+
+  const rect = canvas.getBoundingClientRect();
+  const offsetX = rect.left + window.pageXOffset;
+  const offsetY = rect.top + window.pageYOffset;
+
+  context.lineWidth = lineWidth;
+  context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
+
+  context.lineTo(
+    (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
+    (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
+  );
+  context.stroke();
+  context.beginPath();
+  context.moveTo(
+    (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
+    (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
+  );
+
+  // Tallenna piirtoaskeleet
+  const step = {
+    type: "draw",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory.push(step);
+
+  e.preventDefault();
+}
+
+
+
+
+//UNDO
+function undoDraw() {
+  const stepsToUndo = 5; // 
+
+  for (let i = 0; i < stepsToUndo; i++) {
+    if (drawingHistory.length > 0) {
+      drawingHistory.pop();
+    }
   }
 
-  canvas.addEventListener("touchstart", startDrawingTouch);
-  canvas.addEventListener("touchmove", drawTouch);
-  canvas.addEventListener("touchend", stopDrawing);
+  if (drawingHistory.length > 0) {
+    const lastStep = drawingHistory[drawingHistory.length - 1];
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.putImageData(lastStep.data, 0, 0);
+  } else {
+    clearCanvas();
+  }
+}
+
+function clearCanvas() {
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  const step = {
+    type: "clear",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory = [step];
+}
+
+canvas.addEventListener("mousemove", function (e) {
+  if (isAddingText) {
+    canvas.style.cursor = "text";
+  } else {
+    canvas.style.cursor = "pointer";
+  }
+});
+
+
+
 function addText(e) {
+  
   if (!isAddingText) return;
 
   const text = textInput.value.substr(0, 100);
-  const rect = canvas.getBoundingClientRect();
-
-  // Lisätään mobiililaitteiden kosketuskäsittely
-  const clientX = e.clientX || e.touches[0].clientX;
-  const clientY = e.clientY || e.touches[0].clientY;
-
-  const maxWidth = canvas.width - (clientX - rect.left);
+  const maxWidth = canvas.width - (e.clientX - canvas.getBoundingClientRect().left);
 
   context.font = `${fontSize}px 'Open Sans', sans-serif`;
   context.fillStyle = strokeColor;
-
+ 
   function wrapText(context, text, x, y, maxWidth, lineHeight) {
     var words = text.split(' ');
     var line = '';
-
+  
     for (var n = 0; n < words.length; n++) {
       var testLine = line + words[n];
       var metrics = context.measureText(testLine);
@@ -147,14 +307,8 @@ function addText(e) {
     }
     context.fillText(line, x, y);
   }
-
   const lineHeight = fontSize * 1.2;
-
-  // Lisätään mobiililaitteiden kosketuskäsittely
-  const offsetX = rect.left + window.pageXOffset || rect.left;
-  const offsetY = rect.top + window.pageYOffset || rect.top;
-
-  wrapText(context, text, clientX - offsetX, clientY - offsetY, maxWidth, lineHeight);
+  wrapText(context, text, e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top, maxWidth, lineHeight);
 
   const step = {
     type: "text",
@@ -162,209 +316,102 @@ function addText(e) {
   };
   drawingHistory.push(step);
 
+ 
+ 
+
   isAddingText = false;
   addTextButton.innerText = "Add Text";
   textInput.value = "";
-
-  // Tyhjennetään tekstikenttä ja esikatselu
   textPreview.textContent = "";
 
-  // Käsitellään kommentin pituuden laskenta
   commentInput.addEventListener('input', () => {
     const inputLength = commentInput.value.length;
     characterCount.textContent = `${inputLength} / 500`;
 
-    // Rajoitetaan kommentin pituus 500 merkkiin
+    // Rajoita kommentin pituus 500 merkkiin
     if (inputLength > 500) {
       commentInput.value = commentInput.value.substring(0, 50);
       characterCount.textContent = '50 / 50';
     }
   });
 }
-  function startDrawing(e) {
-    if (isAddingText) {
-      addText(e);
-    } else {
-      isDrawing = true;
-      context.beginPath();
-      context.moveTo(
-        (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
-        (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
-      );
-      draw(e);
-    }
+
+
+
+
+const uploadButton = document.getElementById("uploadButton");
+uploadButton.addEventListener("click", function () {
+ 
+  if (firebase.auth().currentUser) {
+  
+    saveCanvasToFirebase();
+  } else {
+   
+    alert("Please log in to upload a picture.");
+   
   }
+});
 
-  function draw(e) {
-    if (!isDrawing || isAddingText) return;
+// Muut koodit ja tapahtumankäsittelijät...
 
-    context.lineWidth = lineWidth;
-    context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
 
-    context.lineTo(
-      (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
-      (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
-    );
-    context.stroke();
-    context.beginPath();
-    context.moveTo(
-      (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
-      (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
-    );
-
-    const step = {
-      type: "draw",
-      data: context.getImageData(0, 0, canvas.width, canvas.height),
-    };
-    drawingHistory.push(step);
-  }
-
-  function stopDrawing() {
-    if (isAddingText) return;
-    isDrawing = false;
-    context.beginPath();
-  }
-
-  function startDrawingTouch(e) {
-    if (isAddingText) {
-      addText(e.touches[0]);
-    } else {
-      const rect = canvas.getBoundingClientRect();
-      isDrawing = true;
-      const offsetX = rect.left + window.pageXOffset;
-      const offsetY = rect.top + window.pageYOffset;
-      context.beginPath();
-      context.moveTo(
-        (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
-        (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
-      );
-      drawTouch(e);
-    }
-  }
-
-  function drawTouch(e) {
-    if (!isDrawing || isAddingText) return;
-
-    const rect = canvas.getBoundingClientRect();
-    const offsetX = rect.left + window.pageXOffset;
-    const offsetY = rect.top + window.pageYOffset;
-
-    context.lineWidth = lineWidth;
-    context.strokeStyle = isErasing ? "#ffffff" : strokeColor;
-
-    context.lineTo(
-      (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
-      (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
-    );
-    context.stroke();
-    context.beginPath();
-    context.moveTo(
-      (e.touches[0].pageX - offsetX) * (canvas.width / rect.width),
-      (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
-    );
-
-    const step = {
-      type: "draw",
-      data: context.getImageData(0, 0, canvas.width, canvas.height),
-    };
-    drawingHistory.push
-
-(step);
-
-    e.preventDefault();
-  }
-
-  function undoDraw() {
-    const stepsToUndo = 5;
-
-    for (let i = 0; i < stepsToUndo; i++) {
-      if (drawingHistory.length > 0) {
-        drawingHistory.pop();
-      }
-    }
-
-    if (drawingHistory.length > 0) {
-      const lastStep = drawingHistory[drawingHistory.length - 1];
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.putImageData(lastStep.data, 0, 0);
-    } else {
-      clearCanvas();
-    }
-  }
-
-  function clearCanvas() {
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    const step = {
-      type: "clear",
-      data: context.getImageData(0, 0, canvas.width, canvas.height),
-    };
-    drawingHistory = [step];
-  }
-
-  canvas.addEventListener("mousemove", function (e) {
-    if (isAddingText) {
-      canvas.style.cursor = "text";
-    } else {
-      canvas.style.cursor = "pointer";
-    }
-  });
-
-  const uploadButton = document.getElementById("uploadButton");
-  uploadButton.addEventListener("click", function () {
-    if (firebase.auth().currentUser) {
-      saveCanvasToFirebase();
-    } else {
-      alert("Please log in to upload a picture.");
-    }
-  });
-
-  function saveCanvasToFirebase() {
-    if (drawingHistory.length < 200) {
+function saveCanvasToFirebase() {
+  if (drawingHistory.length < 200) {
       alert("Not enough content. Please draw something more before saving.");
       return;
-    }
+  }
 
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = "taidekuva.png";
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = "taidekuva.png";
 
-    const blob = dataURItoBlob(canvas.toDataURL("image/png"));
-    const storageRef = firebase.storage().ref();
-    const imageName = `taidekuva_${new Date().getTime()}.png`;
-    const imageRef = storageRef.child(imageName);
+  // Luo Blob-objekti ja tallenna se Firebaseen
+  const blob = dataURItoBlob(canvas.toDataURL("image/png"));
+  const storageRef = firebase.storage().ref();
+  const imageName = `taidekuva_${new Date().getTime()}.png`;
+  const imageRef = storageRef.child(imageName);
 
-    imageRef.put(blob).then(function (snapshot) {
+  // Tallenna kuva Firebase Storageen
+  imageRef.put(blob).then(function (snapshot) {
       console.log("Kuva ladattu Firebaseen onnistuneesti!");
 
+      // Haetaan kuvalle URL Firebase Storagesta
       imageRef.getDownloadURL().then(function (imageUrl) {
-        const metadata = {
-          timestamp: firebase.database.ServerValue.TIMESTAMP,
-          url: imageUrl
-        };
-        firebase.database().ref('images').push(metadata).then(function () {
-          console.log("Kuvan metatiedot tallennettu Firebaseen onnistuneesti!");
-          window.location.href = "tykatyimmat.html";
-        }).catch(function (error) {
-          console.error("Virhe kuvan metatietojen tallentamisessa Firebaseen:", error);
-        });
+          // Tallenna kuvan metatiedot Firebaseen
+          const metadata = {
+              timestamp: firebase.database.ServerValue.TIMESTAMP, // Lisätään luontiaika
+              url: imageUrl
+          };
+          firebase.database().ref('images').push(metadata).then(function () {
+              console.log("Kuvan metatiedot tallennettu Firebaseen onnistuneesti!");
+
+              // Uudelleenohjaa käyttäjä sivulle tykatyimmat.html
+              window.location.href = "tykatyimmat.html";
+          }).catch(function (error) {
+              console.error("Virhe kuvan metatietojen tallentamisessa Firebaseen:", error);
+          });
       }).catch(function (error) {
-        console.error("Virhe kuvan URL:n hakemisessa Firebase Storagesta:", error);
+          console.error("Virhe kuvan URL:n hakemisessa Firebase Storagesta:", error);
       });
-    }).catch(function (error) {
+  }).catch(function (error) {
       console.error("Virhe kuvan lataamisessa Firebaseen:", error);
-    });
-  }
+  });
+}
 
-  function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(",")[1]);
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
+// Apufunktio: Muuntaa data-URL Blob-objektiksi
+function dataURItoBlob(dataURI) {
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
 
-    for (let i = 0; i < byteString.length; i++) {
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+
+  for (let i = 0; i < byteString.length; i++) {
       ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ab], { type: mimeString });
   }
+
+  return new Blob([ab], { type: mimeString });
+}
+
+// Muut koodit ja tapahtumankäsittelijät...
 });
