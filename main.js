@@ -113,7 +113,74 @@ document.addEventListener("DOMContentLoaded", function () {
   canvas.addEventListener("touchstart", startDrawingTouch);
   canvas.addEventListener("touchmove", drawTouch);
   canvas.addEventListener("touchend", stopDrawing);
+function addText(e) {
+  if (!isAddingText) return;
 
+  const text = textInput.value.substr(0, 100);
+  const rect = canvas.getBoundingClientRect();
+
+  // Lisätään mobiililaitteiden kosketuskäsittely
+  const clientX = e.clientX || e.touches[0].clientX;
+  const clientY = e.clientY || e.touches[0].clientY;
+
+  const maxWidth = canvas.width - (clientX - rect.left);
+
+  context.font = `${fontSize}px 'Open Sans', sans-serif`;
+  context.fillStyle = strokeColor;
+
+  function wrapText(context, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+
+    for (var n = 0; n < words.length; n++) {
+      var testLine = line + words[n];
+      var metrics = context.measureText(testLine);
+      var testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        context.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      }
+      else {
+        line = testLine + (n < words.length - 1 ? ' ' : ''); // Lisätään välilyönti vain, jos ei olla viimeisellä sanalla
+      }
+    }
+    context.fillText(line, x, y);
+  }
+
+  const lineHeight = fontSize * 1.2;
+
+  // Lisätään mobiililaitteiden kosketuskäsittely
+  const offsetX = rect.left + window.pageXOffset || rect.left;
+  const offsetY = rect.top + window.pageYOffset || rect.top;
+
+  wrapText(context, text, clientX - offsetX, clientY - offsetY, maxWidth, lineHeight);
+
+  const step = {
+    type: "text",
+    data: context.getImageData(0, 0, canvas.width, canvas.height),
+  };
+  drawingHistory.push(step);
+
+  isAddingText = false;
+  addTextButton.innerText = "Add Text";
+  textInput.value = "";
+
+  // Tyhjennetään tekstikenttä ja esikatselu
+  textPreview.textContent = "";
+
+  // Käsitellään kommentin pituuden laskenta
+  commentInput.addEventListener('input', () => {
+    const inputLength = commentInput.value.length;
+    characterCount.textContent = `${inputLength} / 500`;
+
+    // Rajoitetaan kommentin pituus 500 merkkiin
+    if (inputLength > 500) {
+      commentInput.value = commentInput.value.substring(0, 50);
+      characterCount.textContent = '50 / 50';
+    }
+  });
+}
   function startDrawing(e) {
     if (isAddingText) {
       addText(e);
