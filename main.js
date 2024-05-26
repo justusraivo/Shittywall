@@ -175,14 +175,17 @@ function draw(e) {
     (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
   );
 
-  // Tallenna piirtoaskeleet
   const step = {
     type: "draw",
     data: context.getImageData(0, 0, canvas.width, canvas.height),
   };
   drawingHistory.push(step);
-}
 
+
+  if (drawingHistory.length > 200) {
+    drawingHistory.splice(0, drawingHistory.length - 200);
+  }
+}
 function stopDrawing() {
   if (isAddingText) return;
   isDrawing = false;
@@ -227,16 +230,19 @@ function drawTouch(e) {
     (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
   );
 
-  // Tallenna piirtoaskeleet
   const step = {
     type: "draw",
     data: context.getImageData(0, 0, canvas.width, canvas.height),
   };
   drawingHistory.push(step);
 
+
+  if (drawingHistory.length > 200) {
+    drawingHistory.splice(0, drawingHistory.length - 200);
+  }
+
   e.preventDefault();
 }
-
 
 
 
