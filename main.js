@@ -31,20 +31,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const canvas = document.getElementById("canvas");
   const context = canvas.getContext("2d");
   canvas.getContext('2d', { willReadFrequently: true });
-
+  
   context.fillStyle = "#ffffff";
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   let isDrawing = false;
   let isErasing = false;
   let isAddingText = false;
-
   let lineWidth = 5;
   let strokeColor = "#000";
   let fontSize = 20;
-
-  let drawingHistory = []; // Taulukko tallentamaan piirtoaskeleet
-  const maxHistorySize = 100; // Maksimi piirtoaskeleiden määrä
+  let drawingHistory = [];
 
   const colorPicker = document.getElementById("colorPicker");
   const changeCanvasButton = document.getElementById("changeCanvas");
@@ -105,16 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("mouseup", stopDrawing);
   canvas.addEventListener("mouseout", stopDrawing);
 
-  // Kosketustapahtumat
-  window.addEventListener('touchstart', onTouchStart, { passive: true });
-
-  function onTouchStart(event) {
-    // Tapahtumankäsittelijän toiminta
-  }
-
   canvas.addEventListener("touchstart", startDrawingTouch);
   canvas.addEventListener("touchmove", drawTouch);
-  canvas.addEventListener("touchend", stopDrawing);
+  canvas.addEventListener("touchend", stopDrawingTouch);
 
   function startDrawing(e) {
     if (isAddingText) {
@@ -147,17 +137,11 @@ document.addEventListener("DOMContentLoaded", function () {
       (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height)
     );
 
-    // Tallenna piirtoaskeleet
     const step = {
       type: "draw",
       data: context.getImageData(0, 0, canvas.width, canvas.height),
     };
     drawingHistory.push(step);
-
-    // Rajaa piirtoaskeleiden määrä
-    if (drawingHistory.length > maxHistorySize) {
-      drawingHistory.shift(); // Poista vanhin piirtoaskel
-    }
   }
 
   function stopDrawing() {
@@ -168,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function startDrawingTouch(e) {
     if (isAddingText) {
-      addText(e.touches[0]); // Käytä ensimmäistä kosketuspistettä
+      addText(e.touches[0]);
     } else {
       const rect = canvas.getBoundingClientRect();
       isDrawing = true;
@@ -204,24 +188,23 @@ document.addEventListener("DOMContentLoaded", function () {
       (e.touches[0].pageY - offsetY) * (canvas.height / rect.height)
     );
 
-    // Tallenna piirtoaskeleet
     const step = {
       type: "draw",
       data: context.getImageData(0, 0, canvas.width, canvas.height),
     };
     drawingHistory.push(step);
 
-    // Rajaa piirtoaskeleiden määrä
-    if (drawingHistory.length > maxHistorySize) {
-      drawingHistory.shift(); // Poista vanhin piirtoaskel
-    }
-
     e.preventDefault();
   }
 
-  // UNDO
+  function stopDrawingTouch() {
+    if (isAddingText) return;
+    isDrawing = false;
+    context.beginPath();
+  }
+
   function undoDraw() {
-    const stepsToUndo = 5; // 
+    const stepsToUndo = 5;
 
     for (let i = 0; i < stepsToUndo; i++) {
       if (drawingHistory.length > 0) {
@@ -269,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var line = '';
 
       for (var n = 0; n < words.length; n++) {
-        var testLine = line + words[n];
+        var testLine = line + words[n] + ' ';
         var metrics = context.measureText(testLine);
         var testWidth = metrics.width;
         if (testWidth > maxWidth && n > 0) {
@@ -277,13 +260,22 @@ document.addEventListener("DOMContentLoaded", function () {
           line = words[n] + ' ';
           y += lineHeight;
         } else {
-          line = testLine + (n < words.length - 1 ? ' ' : ''); // Lisätään välilyönti vain, jos ei olla viimeisellä sanalla
+          line = testLine;
         }
       }
       context.fillText(line, x, y);
     }
-    const lineHeight = fontSize * 1.2;
-    wrapText(context, text, e.clientX - canvas.getBoundingClientRect().left, e.clientY - canvas.getBoundingClientRect().top, maxWidth, lineHeight);
+
+    wrapText(
+      context,
+      text,
+      (e.clientX - canvas.getBoundingClientRect().left) * (canvas.width / canvas.getBoundingClientRect().width),
+      (e.clientY - canvas.getBoundingClientRect().top) * (canvas.height / canvas.getBoundingClientRect().height),
+      maxWidth,
+      fontSize + 5
+    );
+
+    textInput.value = "";
 
     const step = {
       type: "text",
@@ -291,81 +283,50 @@ document.addEventListener("DOMContentLoaded", function () {
     };
     drawingHistory.push(step);
 
-    // Rajaa piirtoaskeleiden määrä
-    if (drawingHistory.length > maxHistorySize) {
-      drawingHistory.shift(); // Poista vanhin piirtoaskel
-    }
-
     isAddingText = false;
     addTextButton.innerText = "Add Text";
-    textInput.value = "";
-  }
-
-  const uploadButton = document.getElementById("uploadButton");
-  uploadButton.addEventListener("click", function () {
-    if (firebase.auth().currentUser) {
-      saveCanvasToFirebase();
-    } else {
-      alert("Please log in to upload a picture.");
-    }
-  });
-
-  function saveCanvasToFirebase() {
-    if (drawingHistory.length < 200) {
-      alert("Not enough content. Please draw something more before saving.");
-      return;
-    }
-
-    const link = document.createElement("a");
-    link.href = canvas.toDataURL("image/png");
-    link.download = "taidekuva.png";
-
-    // Luo Blob-objekti ja tallenna se Firebaseen
-    const blob = dataURItoBlob(canvas.toDataURL("image/png"));
-    const storageRef = firebase.storage().ref();
-    const imageName = `taidekuva_${new Date().getTime()}.png`;
-    const imageRef = storageRef.child(imageName);
-
-    // Tallenna kuva Firebase Storageen
-    imageRef.put(blob).then(function (snapshot) {
-      console.log("Kuva ladattu Firebaseen onnistuneesti!");
-
-      // Haetaan kuvalle URL Firebase Storagesta
-      imageRef.getDownloadURL().then(function (imageUrl) {
-        // Tallenna kuvan metatiedot Firebaseen
-        const metadata = {
-          timestamp: firebase.database.ServerValue.TIMESTAMP, // Lisätään luontiaika
-          url: imageUrl
-        };
-        firebase.database().ref('images').push(metadata).then(function () {
-          console.log("Kuvan metatiedot tallennettu Firebaseen onnistuneesti!");
-
-          // Uudelleenohjaa käyttäjä sivulle tykatyimmat.html
-          window.location.href = "tykatyimmat.html";
-        }).catch(function (error) {
-          console.error("Virhe kuvan metatietojen tallentamisessa Firebaseen:", error);
-        });
-      }).catch(function (error) {
-        console.error("Virhe kuvan URL:n hakemisessa Firebase Storagesta:", error);
-      });
-    }).catch(function (error) {
-      console.error("Virhe kuvan lataamisessa Firebaseen:", error);
-    });
-  }
-
-  // Apufunktio: Muuntaa data-URL Blob-objektiksi
-  function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(",")[1]);
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([ab], { type: mimeString });
   }
 });
 
+function uploadImageToFirebase(canvas) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(function(blob) {
+      var storageRef = firebase.storage().ref();
+      var imageRef = storageRef.child('image.png');
+
+      var uploadTask = imageRef.put(blob);
+
+      uploadTask.on('state_changed', 
+        function(snapshot) {
+          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+        }, function(error) {
+          reject(error);
+        }, function() {
+          uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            resolve(downloadURL);
+          });
+        }
+      );
+    }, 'image/png');
+  });
+}
+
+function saveImage() {
+  const canvas = document.getElementById("canvas");
+  const context = canvas.getContext("2d");
+
+  // Tarkista, että canvaksessa on sisältöä
+  if (!context.getImageData(0, 0, canvas.width, canvas.height).data.some(channel => channel !== 0)) {
+    alert("Not enough content to save.");
+    return;
+  }
+
+  uploadImageToFirebase(canvas)
+    .then((downloadURL) => {
+      console.log('Image available at', downloadURL);
+    })
+    .catch((error) => {
+      console.error('Error uploading image:', error);
+    });
+}
