@@ -59,20 +59,29 @@ canvas.addEventListener("mousemove", function (e) {
   }
 });
 
-canvas.addEventListener("mouseleave", function (e) {
-  if (isDrawing) {
-    isDrawing = false;
-    context.beginPath();
-  }
-});
-
-canvas.addEventListener("mouseenter", function (e) {
-  if (e.buttons === 1 && isAddingText) {
-    isDrawing = true;
-    startDrawing(e);
-  }
-});
-
+  document.addEventListener("mousemove", function (e) {
+    if (isAddingText && e.buttons === 1) {
+      startDrawing(e);
+    } else if (isDrawing && e.buttons === 1) {
+      draw(e);
+    }
+  });
+  
+  document.addEventListener("mouseup", function (e) {
+    if (isAddingText) {
+      stopDrawing();
+    } else if (isDrawing) {
+      stopDrawing();
+    }
+  });
+  
+  document.addEventListener("mousedown", function (e) {
+    if (isAddingText) {
+      addText(e);
+    } else {
+      startDrawing(e);
+    }
+  });
   
 
 
