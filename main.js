@@ -54,15 +54,22 @@ canvas.addEventListener("mousemove", function (e) {
     canvas.style.cursor = "pointer";
   }
 
-  if (isDrawing && (e.buttons === 1 || e.buttons === undefined)) {
+  if (isDrawing) {
     draw(e);
   }
 });
 
 canvas.addEventListener("mouseleave", function (e) {
-  if (isDrawing && (e.buttons === 1 || e.buttons === undefined)) {
+  if (isDrawing) {
     isDrawing = false;
     context.beginPath();
+  }
+});
+
+canvas.addEventListener("mouseenter", function (e) {
+  if (e.buttons === 1 && isAddingText) {
+    isDrawing = true;
+    startDrawing(e);
   }
 });
 
