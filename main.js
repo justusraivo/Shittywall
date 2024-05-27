@@ -282,7 +282,7 @@ function drawTouch(e) {
 
 //UNDO
 function undoDraw() {
-  const stepsToUndo = 5; // 
+  const stepsToUndo = 15; // 
 
   for (let i = 0; i < stepsToUndo; i++) {
     if (drawingHistory.length > 0) {
@@ -342,7 +342,7 @@ function addText(e) {
         y += lineHeight;
       }
       else {
-        line = testLine + (n < words.length - 1 ? ' ' : ''); // Lisätään välilyönti vain, jos ei olla viimeisellä sanalla
+        line = testLine + (n < words.length - 1 ? ' ' : ''); 
       }
     }
     context.fillText(line, x, y);
@@ -392,7 +392,7 @@ uploadButton.addEventListener("click", function () {
   }
 });
 
-// Muut koodit ja tapahtumankäsittelijät...
+
 
 
 function saveCanvasToFirebase() {
