@@ -291,11 +291,13 @@ label {
     cursor: pointer; 
     padding: 30px;
   }
-  @media screen and (max-width: 768px) {
+
+@media screen and (max-width: 768px) {
   canvas {
     width: 350px;
     height: 350px;
+    border: 2px solid rgb(46, 46, 46);
+   
   }
 }
-
 
