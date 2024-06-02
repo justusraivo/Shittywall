@@ -17,7 +17,7 @@
      <link rel="preconnect" href="https://fonts.googleapis.com">
      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
      <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
-     
+
   <!-- YEAH YEAH BAD PROGRAMMING HABITS I am too lazy to do anything please don't hack me-->
   <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
@@ -149,6 +149,16 @@ firebase.auth().signInAnonymously()
             brushSizeDisplay.style.backgroundColor = colorPicker.value;
         });
     </script>
+      <div class="button-container">
+        <span class="material-symbols-outlined" button id="undoButton">
+            undo
+        </span>
+    
+        <span class="material-symbols-outlined" button id="changeCanvas">
+            colors
+        </span>
+    </div>
+  
     
 
    
@@ -215,15 +225,7 @@ firebase.auth().signInAnonymously()
     }
   </style>
   
-  <div class="button-container">
-      <span class="material-symbols-outlined" button id="undoButton">
-          undo
-      </span>
-  
-      <span class="material-symbols-outlined" button id="changeCanvas">
-          colors
-      </span>
-  </div>
+
 
     <button class= "button-74" button id="uploadButton">Throw it on the Wall</button>
     
