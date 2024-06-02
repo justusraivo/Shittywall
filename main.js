@@ -295,7 +295,7 @@ function undoDraw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.putImageData(lastStep.data, 0, 0);
   } else {
-    clearCanvas();
+  
   }
 }
 
