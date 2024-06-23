@@ -271,7 +271,7 @@ function drawTouch(e) {
   drawingHistory.push(step);
 
 
-  if (drawingHistory.length > 200) {
+  if (drawingHistory.length > 400) {
     drawingHistory.splice(0, drawingHistory.length - 200);
   }
 
@@ -396,7 +396,7 @@ uploadButton.addEventListener("click", function () {
 
 
 function saveCanvasToFirebase() {
-  if (drawingHistory.length < 200) {
+  if (drawingHistory.length < 410) {
       alert("Not enough content. Please draw something more before saving.");
       return;
   }
