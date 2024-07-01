@@ -396,7 +396,7 @@ uploadButton.addEventListener("click", function () {
 
 
 function saveCanvasToFirebase() {
-  if (drawingHistory.length < 410) {
+  if (drawingHistory.length < 200) {
       alert("Not enough content. Please draw something more before saving.");
       return;
   }
